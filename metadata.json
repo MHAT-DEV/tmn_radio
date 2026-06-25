@@ -1,0 +1,6 @@
+{
+  "name": "TryMeNow Radio",
+  "description": "An elegant, high-performance web radio application for TryMeNow Radio stations with live playing, song requests, queue, schedule, and multi-language support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

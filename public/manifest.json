@@ -1,0 +1,21 @@
+{
+  "short_name": "TryMeNow Radio",
+  "name": "TryMeNow Radio - Premium Online Streaming",
+  "icons": [
+    {
+      "src": "https://radio.sotyai.com/static/img/logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://radio.sotyai.com/static/img/logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#09090b",
+  "theme_color": "#6366f1",
+  "display": "standalone",
+  "orientation": "portrait"
+}
