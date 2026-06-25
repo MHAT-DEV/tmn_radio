@@ -2739,3 +2739,17 @@ function EmbedPlayer() {
     </div>
   );
 }
+
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
+// (โค้ดฟังก์ชัน App เดิมของคุณทั้งหมด...)
+
+// 🌟 เพิ่ม 3 บรรทัดนี้ไว้ที่ล่างสุดของไฟล์ App.tsx
+if (typeof window !== 'undefined') {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
+}
