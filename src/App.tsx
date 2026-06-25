@@ -2740,11 +2740,14 @@ function EmbedPlayer() {
   );
 }
 
-// 🌟 เพิ่ม 3 บรรทัดนี้ไว้ที่ล่างสุดของไฟล์ App.tsx
+// ล่างสุดของไฟล์ App.tsx 
 if (typeof window !== 'undefined') {
-  ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  )
+  // 🌟 เปลี่ยนมาใช้การ import แบบ dynamic inline ตรงนี้เลย เพื่อป้องกันการตีกันกับด้านบน
+  import('react-dom/client').then(({ createRoot }) => {
+    createRoot(document.getElementById('root')!).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  });
 }
