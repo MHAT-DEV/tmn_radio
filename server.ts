@@ -23,6 +23,16 @@ async function startServer() {
       if (req.headers['content-type']) {
         headers['Content-Type'] = req.headers['content-type'] as string;
       }
+      
+      // Copy over real User-Agent from client or fallback to a standard desktop browser UA
+      headers['User-Agent'] = (req.headers['user-agent'] as string) || "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+      
+      // Pass client IP via X-Forwarded-For to avoid being classified as a centralized crawler/bot
+      const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+      if (clientIp) {
+        headers['X-Forwarded-For'] = Array.isArray(clientIp) ? clientIp.join(', ') : clientIp as string;
+      }
+
       headers['Accept'] = 'application/json';
 
       const options: RequestInit = {

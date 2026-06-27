@@ -169,6 +169,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetEnableAutoplay: "เล่นอัตโนมัติ (Autoplay)",
     widgetShowWaveform: "แสดงคลื่นเสียงอนิเมชั่น",
     widgetShowCover: "แสดงภาพปกเพลง",
+    widgetAddRequestBtn: "เพิ่มปุ่มขอเพลง (Song Request Button)",
+    widgetShowSchedule: "แสดงตารางออกอากาศ (Show Broadcast Schedule)",
+    widgetShowQueue: "แสดงคิวเพลงถัดไป (Show Upcoming Queue)",
     widgetLivePreview: "ตัวอย่างวิดเจ็ตสด (Live Preview)",
     widgetGeneratedCode: "โค้ด HTML Iframe สำหรับฝัง",
     widgetUsageTitle: "คู่มือการใช้งาน (Widget Usage Instructions)",
@@ -258,6 +261,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetEnableAutoplay: "Enable Autoplay",
     widgetShowWaveform: "Show Audio Waveform",
     widgetShowCover: "Show Album Art",
+    widgetAddRequestBtn: "Add Request Song Button",
+    widgetShowSchedule: "Show Broadcast Schedule",
+    widgetShowQueue: "Show Upcoming Queue",
     widgetLivePreview: "Live Widget Preview",
     widgetGeneratedCode: "Generated HTML Iframe Code",
     widgetUsageTitle: "Widget Usage Instructions",
@@ -638,18 +644,31 @@ function AudioWaveVisualizer({ isPlaying, volume, themeColor }: AudioWaveVisuali
 // MAIN APPLICATION COMPONENT
 // ==========================================
 
+const safeGetLocalStorage = (key: string, fallback: string): string => {
+  try {
+    const val = localStorage.getItem(key);
+    return val || fallback;
+  } catch (e) {
+    return fallback;
+  }
+};
+
+const safeSetLocalStorage = (key: string, value: string) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    // Safe fallback
+  }
+};
+
 const AZURACAST_API_KEY = (import.meta as any).env?.VITE_AZURACAST_API_KEY || "b177e426f4707583:84de7a846082980231784fb51f18d5fc";
 
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
-  const isPost = options.method && options.method.toUpperCase() === 'POST';
   const headers: Record<string, string> = {
     'Accept': 'application/json',
+    'X-API-Key': AZURACAST_API_KEY,
     ...(options.headers as Record<string, string>)
   };
-  
-  if (isPost) {
-    headers['X-API-Key'] = AZURACAST_API_KEY;
-  }
 
   return fetch(url, {
     ...options,
@@ -658,9 +677,20 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
 };
 
 export default function App() {
+  const urlParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+  const isEmbedMode = urlParams.get('embed') === 'true';
+
+  if (isEmbedMode) {
+    return <EmbedPlayer />;
+  }
+
+  return <MainRadioApp />;
+}
+
+function MainRadioApp() {
   // Persistence & Internationalization
   const [lang, setLang] = useState<string>(() => {
-    const saved = localStorage.getItem('tmn_selected_lang');
+    const saved = safeGetLocalStorage('tmn_selected_lang', 'th');
     if (saved && ['th', 'en', 'zh', 'vi'].includes(saved)) return saved;
     return 'th';
   });
@@ -696,6 +726,27 @@ export default function App() {
     song_id: ''
   });
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [currentTime, setCurrentTime] = useState<number>(Math.floor(Date.now() / 1000));
+
+  const getCountdownText = (playedAtSecs?: number) => {
+    if (!playedAtSecs) return '';
+    const diff = playedAtSecs - currentTime;
+    if (diff <= 0) {
+      return lang === 'th' ? 'กำลังจะเล่น...' : 'Playing soon...';
+    }
+    const mins = Math.floor(diff / 60);
+    const secs = diff % 60;
+    if (mins > 0) {
+      return lang === 'th' 
+        ? `ในอีก ${mins} นาที ${secs} วินาที` 
+        : `in ${mins} minutes ${secs} seconds`;
+    } else {
+      return lang === 'th' 
+        ? `ในอีก ${secs} วินาที` 
+        : `in ${secs} seconds`;
+    }
+  };
   const [requestableSongs, setRequestableSongs] = useState<RequestableSong[]>([]);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
@@ -711,6 +762,9 @@ export default function App() {
   const [widgetVolume, setWidgetVolume] = useState<number>(0.8);
   const [widgetShowWaveform, setWidgetShowWaveform] = useState<boolean>(true);
   const [widgetShowCover, setWidgetShowCover] = useState<boolean>(true);
+  const [widgetShowRequest, setWidgetShowRequest] = useState<boolean>(false);
+  const [widgetShowSchedule, setWidgetShowSchedule] = useState<boolean>(false);
+  const [widgetShowQueue, setWidgetShowQueue] = useState<boolean>(false);
   const [widgetWidth, setWidgetWidth] = useState<string>('100%');
   const [widgetHeight, setWidgetHeight] = useState<number>(180);
 
@@ -843,23 +897,74 @@ export default function App() {
     }
   };
 
+  const fetchQueue = async () => {
+    try {
+      const res = await fetchWithAuth(`/api/station/${currentStation.id}/queue`);
+      if (res.ok) {
+        const data = await res.json();
+        const rawList = Array.isArray(data) ? data : (data?.queue || []);
+        const mappedQueue = rawList.slice(0, 3).map((item: any) => ({
+          id: item.song?.id || item.cued_at || Math.random(),
+          cued_at: item.cued_at,
+          played_at: item.played_at,
+          duration: item.duration,
+          playlist: item.playlist,
+          is_request: !!item.is_request,
+          song: {
+            id: item.song?.id || '',
+            title: item.song?.title || 'Unknown Title',
+            artist: item.song?.artist || 'Unknown Artist',
+            art: item.song?.art || 'https://radio.sotyai.com/static/img/logo.png',
+            album: item.song?.album || ''
+          }
+        }));
+        setQueue(mappedQueue);
+      } else {
+        setQueue([]);
+      }
+    } catch (err) {
+      console.error('Error fetching queue:', err);
+      setQueue([]);
+    }
+  };
+
   // -------------------------------------------------------------
   // EFFECT HOOKS
   // -------------------------------------------------------------
 
   // Save selected language to localStorage when changed
   useEffect(() => {
-    localStorage.setItem('tmn_selected_lang', lang);
+    safeSetLocalStorage('tmn_selected_lang', lang);
   }, [lang]);
+
+  // Synchronized clock tick in seconds for upcoming queue countdowns
+  useEffect(() => {
+    const clockTimer = setInterval(() => {
+      setCurrentTime(Math.floor(Date.now() / 1000));
+    }, 1000);
+    return () => clearInterval(clockTimer);
+  }, []);
+
+  // Automatically update widget height suggestion based on selected features
+  useEffect(() => {
+    const needsTaller = widgetShowRequest || widgetShowSchedule || widgetShowQueue;
+    if (needsTaller) {
+      setWidgetHeight(460);
+    } else {
+      setWidgetHeight(180);
+    }
+  }, [widgetShowRequest, widgetShowSchedule, widgetShowQueue]);
 
   // Periodically fetch now playing and queue stats
   useEffect(() => {
     fetchNowPlaying();
     fetchSchedule();
     fetchStationInfo();
+    fetchQueue();
 
     const mainInterval = setInterval(() => {
       fetchNowPlaying();
+      fetchQueue();
     }, 15000); // 15-second loop
 
     return () => clearInterval(mainInterval);
@@ -1112,14 +1217,6 @@ export default function App() {
   };
 
   const activeThemeColor = getStationThemeColor();
-
-  // Check if we are in embed mode
-  const urlParams = new URLSearchParams(window.location.search);
-  const isEmbedMode = urlParams.get('embed') === 'true';
-
-  if (isEmbedMode) {
-    return <EmbedPlayer />;
-  }
 
   return (
     <div id="radio-app-root" className="flex h-full min-h-screen w-full bg-zinc-950 text-zinc-100 overflow-hidden font-sans select-none relative">
@@ -1722,6 +1819,84 @@ export default function App() {
                 </div>
               </div>
 
+              {/* Song Queue Segment */}
+              <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <ListMusic className="w-4 h-4 text-zinc-400" style={{ color: activeThemeColor }} />
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-300">
+                      {t('upcomingQueue')}
+                    </h3>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold bg-zinc-950 text-zinc-400 px-2 py-0.5 rounded-md border border-zinc-850/80">
+                    {queue.length}
+                  </span>
+                </div>
+
+                <div className="space-y-3 overflow-y-auto max-h-[290px] pr-1">
+                  {queue.length > 0 ? (
+                    queue.map((item, index) => (
+                      <div 
+                        key={item.id || index} 
+                        className="flex items-center justify-between p-2 hover:bg-zinc-950/70 rounded-xl border-b border-zinc-850/50 transition group"
+                      >
+                        <div className="flex items-center space-x-3 min-w-0 flex-1 pr-2">
+                          <div className="w-10 h-10 rounded-lg overflow-hidden bg-zinc-800 flex-shrink-0 shadow-md relative">
+                            <img 
+                              src={item.song.art || 'https://radio.sotyai.com/static/img/logo.png'} 
+                              className="w-full h-full object-cover" 
+                              alt="Cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://radio.sotyai.com/static/img/logo.png';
+                              }}
+                            />
+                            {/* Number badge on cover */}
+                            <div className="absolute top-0 left-0 bg-zinc-950/80 text-white font-mono text-[9px] font-bold w-4.5 h-4.5 flex items-center justify-center rounded-br-lg">
+                              {index + 1}
+                            </div>
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center space-x-1.5 flex-wrap gap-y-1">
+                              <p className="text-xs font-bold text-zinc-200 truncate group-hover:text-indigo-400 transition-colors">
+                                {item.song.title}
+                              </p>
+                            </div>
+                            <div className="flex items-center space-x-2 mt-0.5 flex-wrap gap-y-1">
+                              <p className="text-[10px] text-zinc-400 truncate">{item.song.artist || t('defaultArtist')}</p>
+                              {item.is_request && (
+                                <span className="text-[8px] md:text-[9px] text-emerald-400 bg-emerald-950/60 border border-emerald-900/50 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider animate-pulse">
+                                  {lang === 'th' ? 'เพลงที่ขอมา' : 'Requested Song'}
+                                </span>
+                              )}
+                            </div>
+                            {item.played_at && (
+                              <p className="text-[10px] font-medium mt-1.5 flex items-center gap-1 font-mono" style={{ color: activeThemeColor }}>
+                                <Clock className="w-3 h-3 animate-spin" style={{ animationDuration: '6s', color: activeThemeColor }} />
+                                {getCountdownText(item.played_at)}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        {item.duration ? (
+                          <div className="flex items-center space-x-1 flex-shrink-0">
+                            <Clock className="w-2.5 h-2.5 text-zinc-500" />
+                            <span className="text-[10px] font-mono text-zinc-400">
+                              {Math.floor(item.duration / 60)}:{(item.duration % 60).toFixed(0).padStart(2, '0')}
+                            </span>
+                          </div>
+                        ) : null}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center text-zinc-500 py-8 text-xs flex flex-col items-center justify-center space-y-2">
+                      <ListMusic className="w-8 h-8 text-zinc-700 stroke-[1.5]" />
+                      <p>{t('noQueue')}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Playback History List Segment */}
               <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
                 <div className="flex items-center space-x-2 mb-4">
@@ -2203,7 +2378,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="bg-zinc-950/40 p-4 rounded-xl border border-zinc-850/60 grid grid-cols-2 gap-4">
+                  <div className="bg-zinc-950/40 p-4 rounded-xl border border-zinc-850/60 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-2">{t('widgetColorTheme')}</span>
                       <select
@@ -2225,6 +2400,17 @@ export default function App() {
                         value={widgetWidth}
                         onChange={(e) => setWidgetWidth(e.target.value)}
                         placeholder="e.g., 100%, 400px"
+                        className="w-full bg-zinc-900 text-xs text-zinc-200 p-2 rounded-lg border border-zinc-800 focus:outline-none focus:border-indigo-500"
+                      />
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-2">{lang === 'th' ? 'ความสูงของวิดเจ็ต (px)' : 'Widget Height (px)'}</span>
+                      <input 
+                        type="number" 
+                        value={widgetHeight}
+                        onChange={(e) => setWidgetHeight(parseInt(e.target.value) || 180)}
+                        placeholder="e.g., 180"
                         className="w-full bg-zinc-900 text-xs text-zinc-200 p-2 rounded-lg border border-zinc-800 focus:outline-none focus:border-indigo-500"
                       />
                     </div>
@@ -2265,6 +2451,39 @@ export default function App() {
                         />
                         <span>{t('widgetShowCover')}</span>
                       </label>
+
+                      <label className="flex items-center space-x-2 text-xs text-zinc-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={widgetShowRequest}
+                          onChange={(e) => setWidgetShowRequest(e.target.checked)}
+                          className="rounded border-zinc-800 bg-zinc-900 accent-indigo-500 w-3.5 h-3.5"
+                          style={{ accentColor: activeThemeColor }}
+                        />
+                        <span>{t('widgetAddRequestBtn')}</span>
+                      </label>
+
+                      <label className="flex items-center space-x-2 text-xs text-zinc-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={widgetShowSchedule}
+                          onChange={(e) => setWidgetShowSchedule(e.target.checked)}
+                          className="rounded border-zinc-800 bg-zinc-900 accent-indigo-500 w-3.5 h-3.5"
+                          style={{ accentColor: activeThemeColor }}
+                        />
+                        <span>{t('widgetShowSchedule')}</span>
+                      </label>
+
+                      <label className="flex items-center space-x-2 text-xs text-zinc-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={widgetShowQueue}
+                          onChange={(e) => setWidgetShowQueue(e.target.checked)}
+                          className="rounded border-zinc-800 bg-zinc-900 accent-indigo-500 w-3.5 h-3.5"
+                          style={{ accentColor: activeThemeColor }}
+                        />
+                        <span>{t('widgetShowQueue')}</span>
+                      </label>
                     </div>
                   </div>
 
@@ -2278,7 +2497,7 @@ export default function App() {
                   {/* Generated Iframe element inside preview box */}
                   <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-850/70 flex items-center justify-center min-h-[220px]">
                     <iframe
-                      src={`${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&lang=${lang}`}
+                      src={`${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&request=${widgetShowRequest}&schedule=${widgetShowSchedule}&queue=${widgetShowQueue}&lang=${lang}`}
                       className="rounded-xl overflow-hidden border border-zinc-800 shadow-2xl transition-all duration-300"
                       style={{
                         width: widgetWidth,
@@ -2294,7 +2513,7 @@ export default function App() {
                       <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">{t('widgetGeneratedCode')}</span>
                       <button
                         onClick={() => {
-                          const code = `<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&lang=${lang}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`;
+                          const code = `<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&request=${widgetShowRequest}&schedule=${widgetShowSchedule}&queue=${widgetShowQueue}&lang=${lang}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`;
                           navigator.clipboard.writeText(code);
                           showToast(t('widgetCopySuccess'), 'success');
                         }}
@@ -2307,7 +2526,7 @@ export default function App() {
                     
                     <textarea
                       readOnly
-                      value={`<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&lang=${lang}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`}
+                      value={`<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&request=${widgetShowRequest}&schedule=${widgetShowSchedule}&queue=${widgetShowQueue}&lang=${lang}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`}
                       className="w-full bg-zinc-900/50 p-3 rounded-lg border border-zinc-850 font-mono text-[10px] text-zinc-300 h-24 focus:outline-none select-all"
                     />
                   </div>
@@ -2721,6 +2940,10 @@ function EmbedPlayer() {
   const showCover = urlParams.get('cover') !== 'false';
   const lang = urlParams.get('lang') || 'th';
 
+  const showRequest = urlParams.get('request') === 'true';
+  const showSchedule = urlParams.get('schedule') === 'true';
+  const showQueue = urlParams.get('queue') === 'true';
+
   const getEmbedT = (key: string, defaultVal: string) => {
     return TRANSLATIONS[lang]?.[key] || TRANSLATIONS['th']?.[key] || defaultVal;
   };
@@ -2736,6 +2959,21 @@ function EmbedPlayer() {
   });
   const [streamStatus, setStreamStatus] = useState<'connected' | 'connecting' | 'stalled'>('connected');
 
+  // Sub-tabs inside the widget
+  const anyExtraTab = showRequest || showSchedule || showQueue;
+  const defaultTab = showRequest ? 'request' : (showSchedule ? 'schedule' : (showQueue ? 'queue' : null));
+  const [activeTab, setActiveTab] = useState<string | null>(defaultTab);
+
+  // Extra Widget Data
+  const [requestSongs, setRequestSongs] = useState<RequestableSong[]>([]);
+  const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([]);
+  const [queueItems, setQueueItems] = useState<QueueItem[]>([]);
+  const [widgetSearch, setWidgetSearch] = useState('');
+  const [isRequestingId, setIsRequestingId] = useState<string | null>(null);
+  const [requestResult, setRequestResult] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [widgetCurrentTime, setWidgetCurrentTime] = useState<number>(Math.floor(Date.now() / 1000));
+  const [isLoadingTab, setIsLoadingTab] = useState(false);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Find stream URL from STATIONS
@@ -2744,9 +2982,7 @@ function EmbedPlayer() {
 
   const fetchEmbedMetadata = async () => {
     try {
-      const res = await fetch(`/api/nowplaying/${stationId}`, {
-        headers: { 'Accept': 'application/json' }
-      });
+      const res = await fetchWithAuth(`/api/nowplaying/${stationId}`);
       if (res.ok) {
         const data = await res.json();
         setMetadata({
@@ -2761,11 +2997,162 @@ function EmbedPlayer() {
     }
   };
 
+  const fetchWidgetRequests = async () => {
+    setIsLoadingTab(true);
+    try {
+      const res = await fetchWithAuth(`/api/station/${stationId}/requests`);
+      if (res.ok) {
+        const data = await res.json();
+        setRequestSongs(data.map((item: any) => ({
+          request_id: item.request_id,
+          request_url: item.request_url,
+          song: {
+            id: item.song?.id || '',
+            text: item.song?.text || '',
+            title: item.song?.title || 'Unknown Title',
+            artist: item.song?.artist || 'Unknown Artist',
+            art: item.song?.art || 'https://radio.sotyai.com/static/img/logo.png'
+          }
+        })));
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoadingTab(false);
+    }
+  };
+
+  const fetchWidgetSchedule = async () => {
+    setIsLoadingTab(true);
+    try {
+      const res = await fetchWithAuth(`/api/station/${stationId}/schedule`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.schedule)) {
+          setScheduleItems(data.schedule.slice(0, 5));
+        } else if (Array.isArray(data)) {
+          setScheduleItems(data.slice(0, 5));
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoadingTab(false);
+    }
+  };
+
+  const fetchWidgetQueue = async () => {
+    setIsLoadingTab(true);
+    try {
+      const res = await fetchWithAuth(`/api/station/${stationId}/queue`);
+      if (res.ok) {
+        const data = await res.json();
+        const rawList = Array.isArray(data) ? data : (data?.queue || []);
+        const mappedQueue = rawList.slice(0, 3).map((item: any) => ({
+          id: item.id,
+          cued_at: item.cued_at,
+          played_at: item.played_at,
+          duration: item.duration,
+          is_request: item.is_request,
+          song: {
+            id: item.song?.id || '',
+            title: item.song?.title || 'Unknown Title',
+            artist: item.song?.artist || 'Unknown Artist',
+            art: item.song?.art || 'https://radio.sotyai.com/static/img/logo.png'
+          }
+        }));
+        setQueueItems(mappedQueue);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoadingTab(false);
+    }
+  };
+
+  const handleWidgetSubmitRequest = async (requestId: string, songTitle: string) => {
+    if (isRequestingId) return;
+    setIsRequestingId(requestId);
+    setRequestResult(null);
+
+    try {
+      const res = await fetchWithAuth(`/api/station/${stationId}/request/${requestId}`, {
+        method: 'POST'
+      });
+      if (res.ok) {
+        setRequestResult({
+          type: 'success',
+          message: lang === 'th' 
+            ? `ขอเพลง "${songTitle}" สำเร็จ! จะเข้าคิวเล่นในเร็วๆ นี้` 
+            : `Requested "${songTitle}" successfully!`
+        });
+        setTimeout(() => setRequestResult(null), 6000);
+      } else {
+        const errorData = await res.json().catch(() => null);
+        const errorMsg = errorData?.message || 'Request cooldown active / limit reached';
+        setRequestResult({
+          type: 'error',
+          message: lang === 'th' ? `ขอเพลงไม่สำเร็จ: ${errorMsg}` : `Error: ${errorMsg}`
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      setRequestResult({
+        type: 'error',
+        message: lang === 'th' ? 'เกิดข้อผิดพลาดในการเชื่อมต่อ' : 'Connection failure'
+      });
+    } finally {
+      setIsRequestingId(null);
+    }
+  };
+
+  const getWidgetCountdownText = (playedAtSecs?: number) => {
+    if (!playedAtSecs) return '';
+    const diff = playedAtSecs - widgetCurrentTime;
+    if (diff <= 0) {
+      return lang === 'th' ? 'กำลังจะเล่น...' : 'Playing soon...';
+    }
+    const mins = Math.floor(diff / 60);
+    const secs = diff % 60;
+    if (mins > 0) {
+      return lang === 'th' 
+        ? `ในอีก ${mins} นาที ${secs} วินาที` 
+        : `in ${mins}m ${secs}s`;
+    } else {
+      return lang === 'th' 
+        ? `ในอีก ${secs} วินาที` 
+        : `in ${secs}s`;
+    }
+  };
+
+  const filteredWidgetSongs = useMemo(() => {
+    if (!widgetSearch.trim()) return requestSongs;
+    const query = widgetSearch.toLowerCase();
+    return requestSongs.filter(s => 
+      s.song.title.toLowerCase().includes(query) || 
+      s.song.artist.toLowerCase().includes(query)
+    );
+  }, [widgetSearch, requestSongs]);
+
   useEffect(() => {
     fetchEmbedMetadata();
     const interval = setInterval(fetchEmbedMetadata, 15000);
     return () => clearInterval(interval);
   }, [stationId]);
+
+  useEffect(() => {
+    if (activeTab === 'request') fetchWidgetRequests();
+    if (activeTab === 'schedule') fetchWidgetSchedule();
+    if (activeTab === 'queue') fetchWidgetQueue();
+  }, [activeTab, stationId]);
+
+  // Clock timer for real-time countdown updates
+  useEffect(() => {
+    const clockTimer = setInterval(() => {
+      setWidgetCurrentTime(Math.floor(Date.now() / 1000));
+    }, 1000);
+    return () => clearInterval(clockTimer);
+  }, []);
 
   useEffect(() => {
     const audio = new Audio(streamUrl);
@@ -2840,16 +3227,23 @@ function EmbedPlayer() {
   if (stationId === 'trymenow_-_lukthong') accentColor = '#10b981';
 
   if (theme === 'light') {
-    bgClass = 'bg-white text-zinc-800 border border-zinc-200 shadow-md';
+    bgClass = 'bg-white text-zinc-850 border border-zinc-200 shadow-sm';
   } else if (theme === 'glass') {
-    bgClass = 'bg-zinc-900/70 backdrop-blur-md text-zinc-100 border border-white/10';
+    bgClass = 'bg-zinc-900/80 backdrop-blur-md text-zinc-100 border border-white/10';
   } else if (theme === 'neon') {
-    bgClass = 'bg-black text-white border border-indigo-500/50 shadow-[0_0_15px_rgba(99,102,241,0.2)]';
+    bgClass = 'bg-black text-white border border-indigo-500/50 shadow-[0_0_15px_rgba(99,102,241,0.25)]';
   }
 
+  const isLight = theme === 'light';
+  const itemBgClass = isLight ? 'bg-zinc-50 border-zinc-100' : 'bg-zinc-900/40 border-zinc-800/60';
+  const textTitleClass = isLight ? 'text-zinc-800' : 'text-zinc-200';
+  const textMutedClass = isLight ? 'text-zinc-500' : 'text-zinc-400';
+
   return (
-    <div className={`w-full h-full p-4 flex flex-col justify-between overflow-hidden select-none ${bgClass}`} style={{ fontFamily: 'Kanit, sans-serif' }}>
-      <div className="flex items-center space-x-3.5 min-w-0">
+    <div className={`w-full h-full p-4 flex flex-col overflow-hidden select-none ${bgClass}`} style={{ fontFamily: 'Kanit, sans-serif' }}>
+      
+      {/* PLAYER SECTION */}
+      <div className="flex items-center space-x-3.5 min-w-0 flex-shrink-0">
         {showCover && (
           <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-zinc-800 bg-zinc-950 shadow-md">
             <img 
@@ -2869,10 +3263,10 @@ function EmbedPlayer() {
               {isPlaying ? getEmbedT('onAirBadge', 'ON AIR') : getEmbedT('stopListening', 'PAUSED')}
             </span>
           </div>
-          <p className="text-sm font-bold truncate pr-2" style={{ color: theme === 'light' ? '#18181b' : '#f4f4f5' }}>
+          <p className={`text-sm font-bold truncate pr-2 ${textTitleClass}`}>
             {metadata.title}
           </p>
-          <p className="text-xs truncate text-zinc-400 mt-0.5">
+          <p className={`text-xs truncate ${textMutedClass} mt-0.5`}>
             {metadata.artist}
           </p>
         </div>
@@ -2880,7 +3274,7 @@ function EmbedPlayer() {
 
       {/* Embedded Live Waveform Visualizer */}
       {showWaveform && (
-        <div className="flex items-center space-x-1 h-6 w-full px-2 my-1.5 overflow-hidden justify-center opacity-75">
+        <div className="flex items-center space-x-1 h-6 w-full px-2 my-1.5 overflow-hidden justify-center opacity-75 flex-shrink-0">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
@@ -2896,7 +3290,8 @@ function EmbedPlayer() {
         </div>
       )}
 
-      <div className="flex items-center justify-between mt-2 pt-2 border-t border-zinc-850/30">
+      {/* CONTROL BUTTONS */}
+      <div className="flex items-center justify-between mt-1 pt-1.5 border-t border-zinc-800/30 flex-shrink-0">
         <button
           onClick={handlePlayToggle}
           className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white flex items-center space-x-1.5 shadow-md hover:scale-103 transition cursor-pointer"
@@ -2921,11 +3316,233 @@ function EmbedPlayer() {
               setVolume(parseFloat(e.target.value));
               if (parseFloat(e.target.value) > 0) setIsMuted(false);
             }}
-            className="w-16 accent-indigo-500 bg-zinc-800 h-1 rounded-full appearance-none cursor-pointer"
+            className="w-16 h-1 rounded-full appearance-none cursor-pointer"
             style={{ accentColor: accentColor }}
           />
         </div>
       </div>
+
+      {/* SUB-TABS INTERACTIVE LAYOUT (IF ENABLED) */}
+      {anyExtraTab && activeTab && (
+        <div className="flex-1 min-h-0 flex flex-col mt-3 pt-2.5 border-t border-zinc-800/40">
+          
+          {/* TAB BAR HEADER */}
+          <div className="flex items-center space-x-1 border-b border-zinc-800/30 pb-1.5 mb-2 flex-shrink-0 overflow-x-auto scrollbar-none">
+            {showRequest && (
+              <button
+                onClick={() => setActiveTab('request')}
+                className={`text-[10px] font-bold px-2 py-1 rounded-md transition flex items-center space-x-1 cursor-pointer ${
+                  activeTab === 'request'
+                    ? 'bg-indigo-600/10 text-indigo-400'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                style={{
+                  backgroundColor: activeTab === 'request' ? `${accentColor}15` : undefined,
+                  color: activeTab === 'request' ? accentColor : undefined
+                }}
+              >
+                <Music2 className="w-3 h-3" />
+                <span>{lang === 'th' ? 'ขอเพลง' : 'Request'}</span>
+              </button>
+            )}
+
+            {showSchedule && (
+              <button
+                onClick={() => setActiveTab('schedule')}
+                className={`text-[10px] font-bold px-2 py-1 rounded-md transition flex items-center space-x-1 cursor-pointer ${
+                  activeTab === 'schedule'
+                    ? 'bg-indigo-600/10 text-indigo-400'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                style={{
+                  backgroundColor: activeTab === 'schedule' ? `${accentColor}15` : undefined,
+                  color: activeTab === 'schedule' ? accentColor : undefined
+                }}
+              >
+                <Calendar className="w-3 h-3" />
+                <span>{lang === 'th' ? 'ผังรายการ' : 'Schedule'}</span>
+              </button>
+            )}
+
+            {showQueue && (
+              <button
+                onClick={() => setActiveTab('queue')}
+                className={`text-[10px] font-bold px-2 py-1 rounded-md transition flex items-center space-x-1 cursor-pointer ${
+                  activeTab === 'queue'
+                    ? 'bg-indigo-600/10 text-indigo-400'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                style={{
+                  backgroundColor: activeTab === 'queue' ? `${accentColor}15` : undefined,
+                  color: activeTab === 'queue' ? accentColor : undefined
+                }}
+              >
+                <ListMusic className="w-3 h-3" />
+                <span>{lang === 'th' ? 'คิวเพลง' : 'Queue'}</span>
+              </button>
+            )}
+
+            {/* Manual Refresh Indicator */}
+            <button
+              onClick={() => {
+                if (activeTab === 'request') fetchWidgetRequests();
+                if (activeTab === 'schedule') fetchWidgetSchedule();
+                if (activeTab === 'queue') fetchWidgetQueue();
+              }}
+              className="ml-auto text-zinc-500 hover:text-zinc-300 transition p-1"
+              title="Refresh"
+            >
+              <RefreshCw className={`w-3 h-3 ${isLoadingTab ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
+
+          {/* TAB CONTENTS SCROLLABLE VIEW */}
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 text-xs">
+            
+            {/* REQUEST RESULT FEEDBACK */}
+            {requestResult && (
+              <div className={`p-2 rounded-lg text-[10px] font-medium mb-2 border flex items-start space-x-1.5 animate-fade-in ${
+                requestResult.type === 'success'
+                  ? 'bg-emerald-950/20 text-emerald-400 border-emerald-900/40'
+                  : 'bg-rose-950/20 text-rose-400 border-rose-900/40'
+              }`}>
+                {requestResult.type === 'success' ? <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" /> : <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />}
+                <span>{requestResult.message}</span>
+              </div>
+            )}
+
+            {/* 1. REQUEST TAB CONTENT */}
+            {activeTab === 'request' && (
+              <div className="space-y-2">
+                {/* Mini Search box */}
+                <div className="relative flex-shrink-0">
+                  <Search className="absolute left-2 top-2 w-3 h-3 text-zinc-500" />
+                  <input
+                    type="text"
+                    value={widgetSearch}
+                    onChange={(e) => setWidgetSearch(e.target.value)}
+                    placeholder={getEmbedT('searchPlaceholder', 'Search...')}
+                    className="w-full bg-zinc-900/60 text-[11px] p-1.5 pl-7 rounded border border-zinc-800 focus:outline-none focus:border-indigo-500/50 text-zinc-200"
+                  />
+                  {widgetSearch && (
+                    <button onClick={() => setWidgetSearch('')} className="absolute right-2 top-2 text-[9px] text-zinc-500 hover:text-zinc-300">
+                      Clear
+                    </button>
+                  )}
+                </div>
+
+                {isLoadingTab ? (
+                  <div className="flex items-center justify-center py-6 text-[10px] text-zinc-500 space-x-1.5">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+                    <span>{getEmbedT('loading', 'Loading...')}</span>
+                  </div>
+                ) : filteredWidgetSongs.length === 0 ? (
+                  <p className="text-center py-4 text-[10px] text-zinc-500">{getEmbedT('noRequestable', 'No requestable songs')}</p>
+                ) : (
+                  <div className="space-y-1.5 pb-2">
+                    {filteredWidgetSongs.slice(0, 30).map((song) => {
+                      const isSubmitting = isRequestingId === song.request_id;
+                      return (
+                        <div key={song.request_id} className={`p-2 rounded border flex items-center justify-between gap-2 ${itemBgClass}`}>
+                          <div className="min-w-0 flex-1">
+                            <p className={`font-bold text-[11px] truncate ${textTitleClass}`}>{song.song.title}</p>
+                            <p className="text-[9px] text-zinc-500 truncate">{song.song.artist}</p>
+                          </div>
+                          <button
+                            onClick={() => handleWidgetSubmitRequest(song.request_id, song.song.title)}
+                            disabled={!!isRequestingId}
+                            className="px-2 py-1 rounded text-[9px] font-bold text-white transition flex-shrink-0 cursor-pointer disabled:opacity-50"
+                            style={{ backgroundColor: accentColor }}
+                          >
+                            {isSubmitting ? '...' : (lang === 'th' ? 'ขอเพลง' : 'Request')}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 2. SCHEDULE TAB CONTENT */}
+            {activeTab === 'schedule' && (
+              <div>
+                {isLoadingTab ? (
+                  <div className="flex items-center justify-center py-6 text-[10px] text-zinc-500 space-x-1.5">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+                    <span>{getEmbedT('loading', 'Loading...')}</span>
+                  </div>
+                ) : scheduleItems.length === 0 ? (
+                  <p className="text-center py-6 text-[10px] text-zinc-500">{getEmbedT('noSchedule', 'No schedule available')}</p>
+                ) : (
+                  <div className="space-y-1.5 pb-2">
+                    {scheduleItems.map((item) => (
+                      <div 
+                        key={item.id} 
+                        className={`p-2 rounded border flex items-center justify-between ${itemBgClass}`}
+                        style={{
+                          borderColor: item.is_active ? `${accentColor}30` : undefined,
+                          backgroundColor: item.is_active ? `${accentColor}05` : undefined
+                        }}
+                      >
+                        <div className="min-w-0">
+                          <p className={`font-bold text-[11px] truncate ${textTitleClass}`}>{item.name}</p>
+                          <p className="text-[9px] text-zinc-500">{item.start_time} - {item.end_time}</p>
+                        </div>
+                        {item.is_active && (
+                          <span className="text-[8px] font-bold font-mono px-1.5 py-0.5 rounded text-white animate-pulse" style={{ backgroundColor: accentColor }}>
+                            {getEmbedT('onAirBadge', 'LIVE')}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 3. QUEUE TAB CONTENT */}
+            {activeTab === 'queue' && (
+              <div>
+                {isLoadingTab ? (
+                  <div className="flex items-center justify-center py-6 text-[10px] text-zinc-500 space-x-1.5">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+                    <span>{getEmbedT('loading', 'Loading...')}</span>
+                  </div>
+                ) : queueItems.length === 0 ? (
+                  <p className="text-center py-6 text-[10px] text-zinc-500">{getEmbedT('noQueue', 'Queue is empty')}</p>
+                ) : (
+                  <div className="space-y-1.5 pb-2">
+                    {queueItems.map((item, idx) => (
+                      <div key={item.id || idx} className={`p-2 rounded border ${itemBgClass}`}>
+                        <div className="flex items-center justify-between">
+                          <p className={`font-bold text-[11px] truncate flex-1 pr-2 ${textTitleClass}`}>{item.song.title}</p>
+                          {item.is_request && (
+                            <span className="text-[8px] text-emerald-400 bg-emerald-950/50 border border-emerald-900/30 px-1 py-0.2 rounded font-bold uppercase shrink-0">
+                              REQ
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center justify-between mt-1">
+                          <p className="text-[9px] text-zinc-500 truncate flex-1 pr-2">{item.song.artist}</p>
+                          {item.played_at && (
+                            <p className="text-[9px] font-semibold flex items-center gap-1 shrink-0 font-mono" style={{ color: accentColor }}>
+                              <Clock className="w-2.5 h-2.5 animate-spin" style={{ animationDuration: '6s', color: accentColor }} />
+                              {getWidgetCountdownText(item.played_at)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
