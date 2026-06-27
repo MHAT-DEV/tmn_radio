@@ -1076,7 +1076,6 @@ function MainRadioApp() {
   // Setup HTML5 Audio element & handlers
   useEffect(() => {
     const audio = new Audio();
-    audio.crossOrigin = 'anonymous';
     audio.preload = 'none';
     audio.volume = isMuted ? 0 : volume;
     audioRef.current = audio;
@@ -3368,7 +3367,6 @@ function EmbedPlayer() {
 
   useEffect(() => {
     const audio = new Audio(streamUrl);
-    audio.crossOrigin = 'anonymous';
     audio.preload = 'none';
     audio.volume = isMuted ? 0 : volume;
     audioRef.current = audio;
