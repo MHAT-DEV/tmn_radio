@@ -1527,18 +1527,29 @@ function MainRadioApp() {
               <Menu className="w-5.5 h-5.5" />
             </button>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-xs bg-red-500/10 text-red-500 px-2 py-0.5 rounded-full font-mono font-bold text-[10px] border border-red-500/20 tracking-wider uppercase animate-pulse">
+              <div className="flex items-center space-x-2 overflow-hidden flex-1 max-w-[200px] sm:max-w-xs md:max-w-md">
+                <span className="text-[10px] bg-red-500/10 text-red-500 px-2 py-0.5 rounded-full font-mono font-bold border border-red-500/20 tracking-wider uppercase animate-pulse whitespace-nowrap flex-shrink-0">
                   ON AIR
                 </span>
-                <span className="text-xs text-zinc-500 hidden md:inline">|</span>
-                <h2 className="text-sm md:text-base font-bold font-title tracking-wide text-zinc-100 truncate max-w-xs md:max-w-md">
-                  {currentStation.name}
-                </h2>
+                <span className="text-xs text-zinc-500 hidden md:inline flex-shrink-0">|</span>
+                <div className="marquee-container">
+                  <div className="marquee-content-wrapper">
+                    <div className="marquee-item">
+                      <h2 className="text-sm md:text-base font-bold font-title tracking-wide text-zinc-100">
+                        {currentStation.name}
+                      </h2>
+                    </div>
+                    <div className="marquee-item" aria-hidden="true">
+                      <h2 className="text-sm md:text-base font-bold font-title tracking-wide text-zinc-100">
+                        {currentStation.name}
+                      </h2>
+                    </div>
+                  </div>
+                </div>
                 <button
                   id="trigger-station-info-modal"
                   onClick={() => setIsInfoModalOpen(true)}
-                  className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center"
+                  className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center flex-shrink-0"
                   title="เกี่ยวกับสถานีนี้ / About Station"
                 >
                   <Info className="w-4 h-4" />
