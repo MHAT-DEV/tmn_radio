@@ -24,7 +24,9 @@ import {
   Sparkles,
   Layers,
   Copy,
-  Code
+  Code,
+  Info,
+  ArrowLeft
 } from 'lucide-react';
 
 // ==========================================
@@ -145,7 +147,37 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetCopyBtn: "คัดลอกโค้ด Embed",
     widgetUsageGuide: "คำแนะนำการนำไปใช้งาน",
     widgetWaveform: "แสดงคลื่นเสียงอนิเมชั่น",
-    widgetCover: "แสดงภาพปกเพลง"
+    widgetCover: "แสดงภาพปกเพลง",
+    // New localization additions
+    languageHeader: "Language / ภาษา",
+    onAirBadge: "ON AIR",
+    activeBadge: "ใช้งานอยู่",
+    quickMenu: "เมนูลัด",
+    loadingAudio: "กำลังโหลดสัญญาณเสียง...",
+    defaultArtist: "สถานี TryMeNow",
+    stopListening: "หยุดฟัง",
+    allStationsTitle: "สถานีวิทยุทั้งหมด",
+    allStationsDesc: "เลือกและเปลี่ยนช่องเพื่อฟังเพลงสด",
+    widgetSelectStation: "1. เลือกสถานีวิทยุ",
+    widgetColorTheme: "2. ธีมสีเครื่องเล่น",
+    themeCosmicDark: "Cosmic Dark (มืด)",
+    themeCrispLight: "Crisp Light (สว่าง)",
+    themeIceGlass: "Ice Glass (กระจก)",
+    themeLaserNeon: "Laser Neon (นีออน)",
+    widgetWidthResolution: "3. ความกว้างของวิดเจ็ต",
+    widgetFeatureFlags: "4. ตัวเลือกคุณสมบัติ",
+    widgetEnableAutoplay: "เล่นอัตโนมัติ (Autoplay)",
+    widgetShowWaveform: "แสดงคลื่นเสียงอนิเมชั่น",
+    widgetShowCover: "แสดงภาพปกเพลง",
+    widgetLivePreview: "ตัวอย่างวิดเจ็ตสด (Live Preview)",
+    widgetGeneratedCode: "โค้ด HTML Iframe สำหรับฝัง",
+    widgetUsageTitle: "คู่มือการใช้งาน (Widget Usage Instructions)",
+    widgetUsage1: "คัดลอกโค้ด iframe ที่สร้างขึ้น",
+    widgetUsage2: "นำไปวางในหน้าเว็บ HTML หรือเครื่องมือสร้างบล็อกของคุณ (เช่น WordPress, Wix)",
+    widgetUsage3: "ปรับความกว้าง (width) หรือความสูง (height) ตามความเหมาะสมของการจัดวางของคุณ",
+    widgetUsage4: "การเล่นเพลงสตรีมที่ปลอดภัย ต้องการการใช้งานแบบ SSL/HTTPS บนหน้าเว็บของคุณ",
+    widgetCopySuccess: "คัดลอกโค้ดฝังวิดเจ็ตสำเร็จ!",
+    backBtn: "กลับ (Back)"
   },
   en: {
     appTitle: "TryMeNow Radio",
@@ -204,7 +236,37 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetCopyBtn: "Copy Embed Code",
     widgetUsageGuide: "Usage Instructions & Guidelines",
     widgetWaveform: "Show Waveform Animation",
-    widgetCover: "Show Song Cover Art"
+    widgetCover: "Show Song Cover Art",
+    // New localization additions
+    languageHeader: "Language Selection",
+    onAirBadge: "ON AIR",
+    activeBadge: "ACTIVE",
+    quickMenu: "Quick Menu",
+    loadingAudio: "Loading audio stream...",
+    defaultArtist: "TryMeNow Station",
+    stopListening: "Stop Listening",
+    allStationsTitle: "All Radio Stations",
+    allStationsDesc: "Select and switch channels to listen live",
+    widgetSelectStation: "1. Select Radio Station",
+    widgetColorTheme: "2. Color Preset Theme",
+    themeCosmicDark: "Cosmic Dark",
+    themeCrispLight: "Crisp Light",
+    themeIceGlass: "Ice Glass",
+    themeLaserNeon: "Laser Neon",
+    widgetWidthResolution: "3. Width Resolution",
+    widgetFeatureFlags: "4. Feature Flags",
+    widgetEnableAutoplay: "Enable Autoplay",
+    widgetShowWaveform: "Show Audio Waveform",
+    widgetShowCover: "Show Album Art",
+    widgetLivePreview: "Live Widget Preview",
+    widgetGeneratedCode: "Generated HTML Iframe Code",
+    widgetUsageTitle: "Widget Usage Instructions",
+    widgetUsage1: "Copy the generated iframe code snippet.",
+    widgetUsage2: "Paste it into any HTML web page or block builder (WordPress, Wix, custom site).",
+    widgetUsage3: "Adjust width or height attributes to fit your host design grid.",
+    widgetUsage4: "Secure stream connections require SSL/HTTPS enabled on your page.",
+    widgetCopySuccess: "Widget embed code copied!",
+    backBtn: "Back"
   },
   zh: {
     appTitle: "TryMeNow 广播电台",
@@ -263,7 +325,37 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetCopyBtn: "复制嵌入代码",
     widgetUsageGuide: "使用说明和指南",
     widgetWaveform: "显示波形动画",
-    widgetCover: "显示歌曲封面"
+    widgetCover: "显示歌曲封面",
+    // New localization additions
+    languageHeader: "Language / 语言选择",
+    onAirBadge: "直播中",
+    activeBadge: "使用中",
+    quickMenu: "快捷菜单",
+    loadingAudio: "正在加载音频流...",
+    defaultArtist: "TryMeNow 电台",
+    stopListening: "暂停收听",
+    allStationsTitle: "所有广播电台",
+    allStationsDesc: "选择并切换频道以收听直播",
+    widgetSelectStation: "1. 选择广播电台",
+    widgetColorTheme: "2. 颜色预设主题",
+    themeCosmicDark: "深空黑 (Cosmic Dark)",
+    themeCrispLight: "极简白 (Crisp Light)",
+    themeIceGlass: "冰川玻 (Ice Glass)",
+    themeLaserNeon: "激光霓 (Laser Neon)",
+    widgetWidthResolution: "3. 宽度分辨率",
+    widgetFeatureFlags: "4. 特性选项",
+    widgetEnableAutoplay: "启用自动播放",
+    widgetShowWaveform: "显示波形动画",
+    widgetShowCover: "显示歌曲封面",
+    widgetLivePreview: "实时预览 (Live Preview)",
+    widgetGeneratedCode: "生成的 HTML Iframe 代码",
+    widgetUsageTitle: "嵌入小组件使用说明",
+    widgetUsage1: "复制生成的 iframe 代码片段。",
+    widgetUsage2: "将其粘贴到任何 HTML 网页或编辑器（WordPress、Wix、自定义网站）中。",
+    widgetUsage3: "调整宽度或高度属性以适应您的设计布局。",
+    widgetUsage4: "安全流连接需要您的页面启用 SSL/HTTPS 协议。",
+    widgetCopySuccess: "已成功复制嵌入代码！",
+    backBtn: "返回 (Back)"
   },
   vi: {
     appTitle: "Đài TryMeNow",
@@ -322,7 +414,37 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetCopyBtn: "Sao chép mã nhúng",
     widgetUsageGuide: "Hướng dẫn sử dụng & Quy định",
     widgetWaveform: "Hiển thị sóng âm động",
-    widgetCover: "Hiển thị ảnh bìa bài hát"
+    widgetCover: "Hiển thị ảnh bìa bài hát",
+    // New localization additions
+    languageHeader: "Language / Chọn ngôn ngữ",
+    onAirBadge: "ĐANG PHÁT SÓNG",
+    activeBadge: "ĐANG HOẠT ĐỘNG",
+    quickMenu: "Menu nhanh",
+    loadingAudio: "Đang tải luồng âm thanh...",
+    defaultArtist: "Đài TryMeNow",
+    stopListening: "Dừng nghe",
+    allStationsTitle: "Tất cả các đài phát thanh",
+    allStationsDesc: "Chọn và chuyển kênh để nghe trực tiếp",
+    widgetSelectStation: "1. Chọn đài phát thanh",
+    widgetColorTheme: "2. Giao diện màu sắc",
+    themeCosmicDark: "Cosmic Dark (Tối)",
+    themeCrispLight: "Crisp Light (Sáng)",
+    themeIceGlass: "Ice Glass (Kính)",
+    themeLaserNeon: "Laser Neon (Neon)",
+    widgetWidthResolution: "3. Chiều rộng",
+    widgetFeatureFlags: "4. Tùy chọn tính năng",
+    widgetEnableAutoplay: "Bật tự động phát",
+    widgetShowWaveform: "Hiển thị sóng âm động",
+    widgetShowCover: "Hiển thị ảnh bìa bài hát",
+    widgetLivePreview: "Xem trước trực tiếp",
+    widgetGeneratedCode: "Mã HTML nhúng được tạo",
+    widgetUsageTitle: "Hướng dẫn sử dụng Widget",
+    widgetUsage1: "Sao chép đoạn mã iframe được tạo.",
+    widgetUsage2: "Dán nó vào bất kỳ trang web HTML hoặc trình xây dựng blog nào (WordPress, Wix, trang web tùy chỉnh).",
+    widgetUsage3: "Điều chỉnh thuộc tính chiều rộng hoặc chiều cao để phù hợp với lưới thiết kế của bạn.",
+    widgetUsage4: "Kết nối luồng bảo mật yêu cầu trang của bạn phải bật SSL/HTTPS.",
+    widgetCopySuccess: "Đã sao chép mã nhúng thành công!",
+    backBtn: "Quay lại (Back)"
   }
 };
 
@@ -575,8 +697,7 @@ export default function App() {
   });
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [requestableSongs, setRequestableSongs] = useState<RequestableSong[]>([]);
-  const [upcomingQueue, setUpcomingQueue] = useState<QueueItem[]>([]);
-  const [queueError, setQueueError] = useState<boolean>(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
   
   // Dynamic Station Info Specs State (GET /api/station/{station_id})
@@ -622,7 +743,7 @@ export default function App() {
 
   const fetchNowPlaying = async () => {
     try {
-      const res = await fetchWithAuth(`https://radio.sotyai.com/api/nowplaying/${currentStation.id}`);
+      const res = await fetchWithAuth(`/api/nowplaying/${currentStation.id}`);
       if (!res.ok) throw new Error('API Response failure');
       const data = await res.json();
       
@@ -657,41 +778,9 @@ export default function App() {
     }
   };
 
-  const fetchQueue = async () => {
-    try {
-      const res = await fetchWithAuth(`https://radio.sotyai.com/api/station/${currentStation.id}/queue`);
-      if (res.ok) {
-        const data = await res.json();
-        setUpcomingQueue(data.map((item: any) => ({
-          id: item.song?.id || Math.random().toString(),
-          cued_at: item.cued_at,
-          played_at: item.played_at,
-          duration: item.duration,
-          playlist: item.playlist,
-          is_request: !!item.is_request,
-          song: {
-            id: item.song?.id || '',
-            title: item.song?.title || 'Unknown Title',
-            artist: item.song?.artist || 'Unknown Artist',
-            art: item.song?.art || 'https://radio.sotyai.com/static/img/logo.png',
-            album: item.song?.album || ''
-          }
-        })));
-        setQueueError(false);
-      } else {
-        setUpcomingQueue([]);
-        setQueueError(true);
-      }
-    } catch (err) {
-      console.error('Error fetching station queue:', err);
-      setUpcomingQueue([]);
-      setQueueError(true);
-    }
-  };
-
   const fetchSchedule = async () => {
     try {
-      const res = await fetchWithAuth(`https://radio.sotyai.com/api/station/${currentStation.id}/schedule`);
+      const res = await fetchWithAuth(`/api/station/${currentStation.id}/schedule`);
       if (res.ok) {
         const data = await res.json();
         setSchedule(data.map((item: any) => ({
@@ -713,7 +802,7 @@ export default function App() {
 
   const fetchRequestableSongs = async () => {
     try {
-      const res = await fetchWithAuth(`https://radio.sotyai.com/api/station/${currentStation.id}/requests`);
+      const res = await fetchWithAuth(`/api/station/${currentStation.id}/requests`);
       if (res.ok) {
         const data = await res.json();
         setRequestableSongs(data.map((item: any) => ({
@@ -739,7 +828,7 @@ export default function App() {
   const fetchStationInfo = async () => {
     setIsLoadingStationInfo(true);
     try {
-      const res = await fetchWithAuth(`https://radio.sotyai.com/api/station/${currentStation.id}`);
+      const res = await fetchWithAuth(`/api/station/${currentStation.id}`);
       if (res.ok) {
         const data = await res.json();
         setStationInfo(data);
@@ -766,13 +855,11 @@ export default function App() {
   // Periodically fetch now playing and queue stats
   useEffect(() => {
     fetchNowPlaying();
-    fetchQueue();
     fetchSchedule();
     fetchStationInfo();
 
     const mainInterval = setInterval(() => {
       fetchNowPlaying();
-      fetchQueue();
     }, 15000); // 15-second loop
 
     return () => clearInterval(mainInterval);
@@ -855,7 +942,7 @@ export default function App() {
 
   // Update Media Session Metadata for Lock Screen Controls
   useEffect(() => {
-    if ('mediaSession' in navigator) {
+    if ('mediaSession' in navigator && window.MediaMetadata) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: nowPlaying.title || currentStation.name,
         artist: nowPlaying.artist || 'TryMeNow Radio',
@@ -935,7 +1022,7 @@ export default function App() {
     setIsSubmittingRequest(requestId);
 
     try {
-      const res = await fetchWithAuth(`https://radio.sotyai.com/api/station/${currentStation.id}/request/${requestId}`, {
+      const res = await fetchWithAuth(`/api/station/${currentStation.id}/request/${requestId}`, {
         method: 'POST'
       });
       
@@ -1035,7 +1122,7 @@ export default function App() {
   }
 
   return (
-    <div id="radio-app-root" className="flex h-screen w-screen bg-zinc-950 text-zinc-100 overflow-hidden font-sans select-none relative">
+    <div id="radio-app-root" className="flex h-full min-h-screen w-full bg-zinc-950 text-zinc-100 overflow-hidden font-sans select-none relative">
       
       {/* BACKGROUND FLOATING AMBIENT GLOW */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -1192,7 +1279,7 @@ export default function App() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono uppercase text-zinc-500 flex items-center space-x-1.5 font-bold">
                 <Languages className="w-3.5 h-3.5" />
-                <span>Language / ภาษา</span>
+                <span>{t('languageHeader')}</span>
               </span>
             </div>
             <div className="grid grid-cols-2 gap-1.5">
@@ -1252,6 +1339,14 @@ export default function App() {
                 <h2 className="text-sm md:text-base font-bold font-title tracking-wide text-zinc-100 truncate max-w-xs md:max-w-md">
                   {currentStation.name}
                 </h2>
+                <button
+                  id="trigger-station-info-modal"
+                  onClick={() => setIsInfoModalOpen(true)}
+                  className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer flex items-center justify-center"
+                  title="เกี่ยวกับสถานีนี้ / About Station"
+                >
+                  <Info className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
@@ -1270,30 +1365,6 @@ export default function App() {
               >
                 <Radio className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">{t('tabPlayer')}</span>
-              </button>
-              <button 
-                id="tab-select-request"
-                onClick={() => setCurrentTab('request')} 
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
-                  currentTab === 'request' 
-                    ? 'bg-zinc-800 text-white shadow-sm' 
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                <Search className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t('tabRequest')}</span>
-              </button>
-              <button 
-                id="tab-select-schedule"
-                onClick={() => setCurrentTab('schedule')} 
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
-                  currentTab === 'schedule' 
-                    ? 'bg-zinc-800 text-white shadow-sm' 
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t('tabSchedule')}</span>
               </button>
               <button 
                 id="tab-select-widget"
@@ -1416,7 +1487,7 @@ export default function App() {
                       {isPlaying ? (
                         <>
                           <Pause className="w-3.5 h-3.5 fill-current text-white animate-pulse" />
-                          <span>หยุดฟัง ({t('listenRadio')})</span>
+                          <span>{t('stopListening')} ({t('listenRadio')})</span>
                         </>
                       ) : (
                         <>
@@ -1447,7 +1518,6 @@ export default function App() {
                         
                         await Promise.all([
                           fetchNowPlaying(),
-                          fetchQueue(),
                           fetchSchedule(),
                           fetchStationInfo()
                         ]);
@@ -1471,115 +1541,86 @@ export default function App() {
                 themeColor={activeThemeColor} 
               />
 
-              {/* Station General Info Segment */}
+              {/* รายการสถานีทั้งหมด (All Stations Selector) */}
               <div className="bg-zinc-900/60 p-6 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-600/10 flex items-center justify-center text-indigo-400 flex-shrink-0" style={{ color: activeThemeColor, backgroundColor: activeThemeColor + '10' }}>
-                    <Radio className="w-5 h-5" />
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-600/10 flex items-center justify-center text-indigo-400 flex-shrink-0" style={{ color: activeThemeColor, backgroundColor: activeThemeColor + '10' }}>
+                      <Radio className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-zinc-100">{t('allStationsTitle')}</h4>
+                      <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">{t('allStationsDesc')}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-zinc-100">{t('aboutStation')}</h4>
-                    <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">Station Specifications</p>
-                  </div>
+                  <span className="text-[10px] bg-zinc-800 text-zinc-300 px-2.5 py-1 rounded-full font-mono font-bold">
+                    {STATIONS.length} LIVE CHANNELS
+                  </span>
                 </div>
 
-                {isLoadingStationInfo ? (
-                  <div className="flex items-center justify-center py-6 space-x-2">
-                    <RefreshCw className="w-4 h-4 animate-spin text-indigo-400" style={{ color: activeThemeColor }} />
-                    <span className="text-xs text-zinc-500">{t('loading')}</span>
-                  </div>
-                ) : stationInfo ? (
-                  <div className="space-y-4">
-                    {/* Station Description */}
-                    <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-950/40 p-3 rounded-xl border border-zinc-900">
-                      {stationInfo.description || 'ไม่มีข้อมูลอธิบายสถานีในขณะนี้ (No description available for this station)'}
-                    </p>
-
-                    {/* Metadata Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      <div className="bg-zinc-950/30 p-2.5 rounded-xl border border-zinc-850/40 text-center md:text-left">
-                        <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-500 font-bold block">Frontend Stream</span>
-                        <span className="text-xs font-bold text-zinc-200 mt-0.5 block capitalize">{stationInfo.frontend || 'Icecast'}</span>
-                      </div>
-                      <div className="bg-zinc-950/30 p-2.5 rounded-xl border border-zinc-850/40 text-center md:text-left">
-                        <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-500 font-bold block">Backend AutoDJ</span>
-                        <span className="text-xs font-bold text-zinc-200 mt-0.5 block capitalize">{stationInfo.backend || 'Liquidsoap'}</span>
-                      </div>
-                      <div className="bg-zinc-950/30 p-2.5 rounded-xl border border-zinc-850/40 text-center md:text-left col-span-2 md:col-span-1">
-                        <span className="text-[9px] font-mono uppercase tracking-widest text-zinc-500 font-bold block">Timezone / เวลา</span>
-                        <span className="text-xs font-bold text-zinc-200 mt-0.5 block truncate" title={stationInfo.timezone}>{stationInfo.timezone || 'UTC'}</span>
-                      </div>
-                    </div>
-
-                    {/* Stream Mounts & Streams list */}
-                    {stationInfo.mounts && stationInfo.mounts.length > 0 && (
-                      <div className="bg-zinc-950/20 rounded-xl p-3 border border-zinc-900">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold mb-2 block">
-                          จุดเชื่อมต่อสัญญาณเสียง (Audio Mountpoints)
-                        </span>
-                        <div className="space-y-1.5">
-                          {stationInfo.mounts.map((mount: any) => (
-                            <div key={mount.id} className="flex items-center justify-between p-2 rounded-lg bg-zinc-900/40 text-xs">
-                              <span className="font-mono text-zinc-300 font-bold truncate pr-2">{mount.name}</span>
-                              <div className="flex items-center space-x-2 flex-shrink-0 font-mono text-[10px]">
-                                <span className="bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded font-bold uppercase">{mount.format}</span>
-                                <span className="text-indigo-400 font-bold" style={{ color: activeThemeColor }}>{mount.bitrate} kbps</span>
-                                {mount.listeners && (
-                                  <span className="text-emerald-400 font-bold">● {mount.listeners.current}</span>
-                                )}
-                              </div>
-                            </div>
-                          ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                  {STATIONS.map((st) => {
+                    const isActive = currentStation.id === st.id;
+                    return (
+                      <button
+                        key={st.id}
+                        id={`player-station-select-${st.id}`}
+                        onClick={() => selectStation(st)}
+                        className={`text-left p-4 rounded-xl transition-all duration-300 flex items-center justify-between group relative cursor-pointer overflow-hidden border ${
+                          isActive 
+                            ? 'bg-zinc-800/80 border-indigo-500/80 shadow-lg shadow-indigo-950/20' 
+                            : 'bg-zinc-950/40 border-zinc-850 hover:bg-zinc-900 hover:border-zinc-800'
+                        }`}
+                        style={{ 
+                          borderColor: isActive ? activeThemeColor : undefined,
+                        } as any}
+                      >
+                        <div className="flex items-center space-x-3.5 min-w-0 z-10">
+                          <div className={`w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3 ${
+                            isActive ? 'text-white' : 'text-zinc-400'
+                          }`}
+                          style={{ 
+                            color: isActive ? activeThemeColor : undefined,
+                            borderColor: isActive ? activeThemeColor + '40' : undefined
+                          }}
+                          >
+                            <Radio className="w-5 h-5" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className={`text-sm font-bold truncate transition-colors duration-300 ${
+                              isActive ? 'text-zinc-100' : 'text-zinc-300 group-hover:text-white'
+                            }`}>
+                              {st.name}
+                            </p>
+                            <p className="text-[10px] text-zinc-500 font-mono tracking-wider truncate mt-0.5">
+                              {st.id.toUpperCase().replace('_', ' ')}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
 
-                    {/* Playlist downloads links */}
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {stationInfo.playlist_m3u_url && (
-                        <a 
-                          href={stationInfo.playlist_m3u_url}
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="text-[10px] font-mono font-bold bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg border border-zinc-700/40 flex items-center transition"
-                        >
-                          <ExternalLink className="w-3 h-3 mr-1.5" />
-                          <span>Download .M3U Playlist</span>
-                        </a>
-                      )}
-                      {stationInfo.playlist_pls_url && (
-                        <a 
-                          href={stationInfo.playlist_pls_url}
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="text-[10px] font-mono font-bold bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white px-3 py-1.5 rounded-lg border border-zinc-700/40 flex items-center transition"
-                        >
-                          <ExternalLink className="w-3 h-3 mr-1.5" />
-                          <span>Download .PLS Playlist</span>
-                        </a>
-                      )}
-                      {stationInfo.public_player_url && (
-                        <a 
-                          href={stationInfo.public_player_url}
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="text-[10px] font-mono font-bold bg-zinc-900 hover:bg-indigo-950 text-indigo-400 hover:text-white px-3 py-1.5 rounded-lg border border-indigo-500/20 flex items-center transition"
-                          style={{ borderColor: activeThemeColor + '30', color: activeThemeColor }}
-                        >
-                          <ExternalLink className="w-3 h-3 mr-1.5" />
-                          <span>AzuraCast Public Page</span>
-                        </a>
-                      )}
-                    </div>
-
-                  </div>
-                ) : (
-                  <div className="bg-zinc-950/20 p-4 rounded-xl border border-zinc-900 text-center">
-                    <p className="text-xs text-zinc-500 leading-relaxed">
-                      เชื่อมต่อกับข้อมูลจำเพาะของสถานีหลักเรียบร้อย สตรีมเสียงผ่านเซิร์ฟเวอร์สำรองมาตรฐาน TMN Audio Direct เข้ารหัสแบบสเตอริโอความละเอียดสูง
-                    </p>
-                  </div>
-                )}
+                        {/* Active Indicator & Visualizer */}
+                        <div className="flex items-center space-x-2 z-10 flex-shrink-0">
+                          {isActive && isPlaying ? (
+                            <div className="flex items-end space-x-0.75 h-4 pr-1">
+                              <span className="w-0.75 h-3 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.1s', backgroundColor: activeThemeColor }} />
+                              <span className="w-0.75 h-4 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.3s', backgroundColor: activeThemeColor }} />
+                              <span className="w-0.75 h-2 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.5s', backgroundColor: activeThemeColor }} />
+                            </div>
+                          ) : isActive ? (
+                            <span className="text-[9px] bg-indigo-950 text-indigo-400 font-mono font-bold px-2 py-0.5 rounded-md border border-indigo-900/50" style={{ color: activeThemeColor, borderColor: activeThemeColor + '30', backgroundColor: activeThemeColor + '10' }}>
+                              ACTIVE
+                            </span>
+                          ) : null}
+                        </div>
+                        
+                        {/* Interactive glow effect */}
+                        {isActive && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-indigo-500/5 pointer-events-none opacity-50" style={{ backgroundImage: `linear-gradient(to right, transparent, ${activeThemeColor}05)` }} />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
             </div>
@@ -1587,85 +1628,99 @@ export default function App() {
             {/* Sidebar Column: Queue & Playback History (5 cols) */}
             <div className="lg:col-span-5 flex flex-col space-y-6">
               
-              {/* Upcoming Queue Segments (Enhances session times) */}
-              {!queueError && (
-                <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                      <ListMusic className="w-4 h-4 text-indigo-400" style={{ color: activeThemeColor }} />
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-300">
-                        {t('upcomingQueue')}
-                      </h3>
-                    </div>
-                    <span className="text-[10px] bg-indigo-950 text-indigo-400 px-2 py-0.5 rounded-full font-mono font-bold" style={{ color: activeThemeColor, backgroundColor: activeThemeColor + '15' }}>
-                      {upcomingQueue.length} {t('upNext')}
-                    </span>
-                  </div>
-
-                  <div className="space-y-2.5 overflow-y-auto max-h-[220px] pr-1 scrollbar-thin">
-                    {upcomingQueue.length > 0 ? (
-                      upcomingQueue.map((item, idx) => (
-                        <div 
-                          key={item.id || idx} 
-                          className="flex items-center space-x-3 p-2 bg-zinc-950/50 rounded-xl hover:bg-zinc-950 transition border border-zinc-850/20 group"
-                        >
-                          <div className="w-10 h-10 rounded-lg overflow-hidden bg-zinc-800 flex-shrink-0 shadow-sm border border-zinc-900">
-                            <img 
-                              src={item.song.art || 'https://radio.sotyai.com/static/img/logo.png'} 
-                              className="w-full h-full object-cover"
-                              alt="Up next"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'https://radio.sotyai.com/static/img/logo.png';
-                              }}
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center space-x-1.5">
-                              <p className="text-xs font-bold text-zinc-100 truncate flex-1">{item.song.title}</p>
-                              {item.is_request && (
-                                <span className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[8px] px-1 py-0.2 rounded font-bold font-mono uppercase tracking-wider scale-90 flex-shrink-0">
-                                  REQUEST
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-[10px] text-zinc-400 truncate mt-0.5">{item.song.artist || 'ศิลปินนิรนาม'}</p>
-                            
-                            {/* Extra info from real API */}
-                            <div className="flex items-center space-x-2 mt-1">
-                              {item.playlist && (
-                                <span className="text-[8px] bg-zinc-900 text-zinc-500 border border-zinc-800/80 px-1 py-0.2 rounded font-mono truncate max-w-[80px]">
-                                  📁 {item.playlist}
-                                </span>
-                              )}
-                              {item.duration ? (
-                                <span className="text-[8px] text-zinc-500 font-mono">
-                                  ⏱️ {formatTime(item.duration)}
-                                </span>
-                              ) : null}
-                            </div>
-                          </div>
-                          
-                          <div className="text-right flex-shrink-0">
-                            <span className="text-[9px] font-mono text-zinc-500 font-bold bg-zinc-900 px-1.5 py-1 rounded border border-zinc-850 block text-center">
-                              #{idx + 1}
-                            </span>
-                            {item.played_at ? (
-                              <span className="text-[8px] font-mono text-indigo-400 font-bold block mt-1" style={{ color: activeThemeColor }}>
-                                {formatPlayedTime(item.played_at)}
-                              </span>
-                            ) : null}
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center py-6 text-zinc-500 text-xs flex flex-col items-center justify-center space-y-1">
-                        <Music2 className="w-5 h-5 text-zinc-600 mb-1" />
-                        <span>{t('noQueue')}</span>
-                      </div>
-                    )}
-                  </div>
+              {/* Quick Menu */}
+              <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl space-y-4">
+                <div className="flex items-center space-x-2 border-b border-zinc-850/60 pb-3">
+                  <Sparkles className="w-4 h-4 text-indigo-400" style={{ color: activeThemeColor }} />
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-300">
+                    {t('quickMenu')}
+                  </h3>
                 </div>
-              )}
+
+                {/* Request and Schedule Quick Nav Buttons */}
+                <div className="grid grid-cols-2 gap-2.5">
+                  <button
+                    onClick={() => setCurrentTab('request')}
+                    className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 gap-1.5 cursor-pointer ${
+                      (currentTab as string) === 'request'
+                        ? 'bg-indigo-950/40 text-white font-bold'
+                        : 'bg-zinc-950/40 border-zinc-850 text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200'
+                    }`}
+                    style={{
+                      borderColor: (currentTab as string) === 'request' ? activeThemeColor : undefined,
+                      color: (currentTab as string) === 'request' ? activeThemeColor : undefined,
+                    }}
+                  >
+                    <Search className="w-4 h-4" />
+                    <span className="text-[11px] font-bold">{t('tabRequest')}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setCurrentTab('schedule')}
+                    className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 gap-1.5 cursor-pointer ${
+                      (currentTab as string) === 'schedule'
+                        ? 'bg-indigo-950/40 text-white font-bold'
+                        : 'bg-zinc-950/40 border-zinc-850 text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200'
+                    }`}
+                    style={{
+                      borderColor: (currentTab as string) === 'schedule' ? activeThemeColor : undefined,
+                      color: (currentTab as string) === 'schedule' ? activeThemeColor : undefined,
+                    }}
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span className="text-[11px] font-bold">{t('tabSchedule')}</span>
+                  </button>
+                </div>
+
+                {/* Downloads & External Links */}
+                <div className="flex flex-col space-y-2 pt-1">
+                  {stationInfo?.playlist_m3u_url ? (
+                    <a 
+                      href={stationInfo.playlist_m3u_url}
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-xs font-bold bg-zinc-950/40 hover:bg-zinc-800 text-zinc-300 hover:text-white px-3.5 py-2.5 rounded-xl border border-zinc-850/60 flex items-center justify-between transition group"
+                    >
+                      <span className="flex items-center space-x-2">
+                        <span className="text-zinc-500 group-hover:text-zinc-300">🎵</span>
+                        <span>Download .M3U Playlist</span>
+                      </span>
+                      <ExternalLink className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300" />
+                    </a>
+                  ) : null}
+                  {stationInfo?.playlist_pls_url ? (
+                    <a 
+                      href={stationInfo.playlist_pls_url}
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-xs font-bold bg-zinc-950/40 hover:bg-zinc-800 text-zinc-300 hover:text-white px-3.5 py-2.5 rounded-xl border border-zinc-850/60 flex items-center justify-between transition group"
+                    >
+                      <span className="flex items-center space-x-2">
+                        <span className="text-zinc-500 group-hover:text-zinc-300">🎧</span>
+                        <span>Download .PLS Playlist</span>
+                      </span>
+                      <ExternalLink className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300" />
+                    </a>
+                  ) : null}
+                  {stationInfo?.public_player_url ? (
+                    <a 
+                      href={stationInfo.public_player_url}
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-xs font-bold bg-zinc-950/40 hover:bg-zinc-800/20 text-zinc-300 hover:text-white px-3.5 py-2.5 rounded-xl border border-zinc-850/60 flex items-center justify-between transition group"
+                      style={{ 
+                        borderColor: activeThemeColor + '20',
+                      }}
+                    >
+                      <span className="flex items-center space-x-2">
+                        <span style={{ color: activeThemeColor }}>📡</span>
+                        <span style={{ color: activeThemeColor }}>AzuraCast Public Page</span>
+                      </span>
+                      <ExternalLink className="w-3.5 h-3.5" style={{ color: activeThemeColor }} />
+                    </a>
+                  ) : null}
+                </div>
+              </div>
 
               {/* Playback History List Segment */}
               <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
@@ -1695,10 +1750,7 @@ export default function App() {
                             />
                           </div>
                           <div className="min-w-0">
-                            <p 
-  className="text-xs font-bold text-zinc-200 truncate group-hover:text-[var(--hover-color)] transition-colors" 
-  style={{ '--hover-color': activeThemeColor } as React.CSSProperties}
->
+                            <p className="text-xs font-bold text-zinc-200 truncate group-hover:text-indigo-400 transition-colors">
                               {item.song.title}
                             </p>
                             <p className="text-[10px] text-zinc-400 truncate mt-0.5">{item.song.artist}</p>
@@ -1740,6 +1792,15 @@ export default function App() {
           <div id="request-tab-content" className="p-4 md:p-8 max-w-4xl mx-auto w-full animate-fade-in">
             <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-850 shadow-xl space-y-6">
               
+              {/* Back to player button */}
+              <button
+                onClick={() => setCurrentTab('player')}
+                className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-950/60 hover:bg-zinc-800 border border-zinc-850/80 px-3 py-1.5 rounded-lg transition-all w-fit cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span className="font-bold">{t('backBtn')}</span>
+              </button>
+
               {/* Search Heading & Stats */}
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-zinc-850 pb-5">
                 <div>
@@ -1847,8 +1908,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="พิมพ์ชื่อเพลง หรือชื่อศิลปิน เพื่อค้นหาได้ทันที..." 
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-20 py-3.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[var(--focus-border)] focus:ring-1 focus:ring-[var(--focus-border)]/30 transition-all shadow-inner"
-                  style={{ '--focus-border': activeThemeColor } as React.CSSProperties}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-11 pr-20 py-3.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all shadow-inner"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-1.5">
                   {searchQuery && (
@@ -1951,8 +2011,17 @@ export default function App() {
         {/* ------------------------------------------------------------- */}
         {currentTab === 'schedule' && (
           <div id="schedule-tab-content" className="p-4 md:p-8 max-w-4xl mx-auto w-full">
-            <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-850 shadow-xl">
+            <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-850 shadow-xl space-y-6">
               
+              {/* Back to player button */}
+              <button
+                onClick={() => setCurrentTab('player')}
+                className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-950/60 hover:bg-zinc-800 border border-zinc-850/80 px-3 py-1.5 rounded-lg transition-all w-fit cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span className="font-bold">{t('backBtn')}</span>
+              </button>
+
               {/* Timetable Header */}
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -2114,7 +2183,7 @@ export default function App() {
                 {/* Options Panel (6 cols) */}
                 <div className="lg:col-span-6 space-y-5">
                   <div className="bg-zinc-950/40 p-4 rounded-xl border border-zinc-850/60">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-3">1. Select Radio Station</span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-3">{t('widgetSelectStation')}</span>
                     <div className="grid grid-cols-1 gap-2">
                       {STATIONS.map((st) => (
                         <button
@@ -2136,21 +2205,21 @@ export default function App() {
 
                   <div className="bg-zinc-950/40 p-4 rounded-xl border border-zinc-850/60 grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-2">2. Color Preset Theme</span>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-2">{t('widgetColorTheme')}</span>
                       <select
                         value={widgetTheme}
                         onChange={(e: any) => setWidgetTheme(e.target.value)}
                         className="w-full bg-zinc-900 text-xs text-zinc-200 p-2.5 rounded-lg border border-zinc-800 focus:outline-none focus:border-indigo-500"
                       >
-                        <option value="dark">Cosmic Dark</option>
-                        <option value="light">Crisp Light</option>
-                        <option value="glass">Ice Glass</option>
-                        <option value="neon">Laser Neon</option>
+                        <option value="dark">{t('themeCosmicDark')}</option>
+                        <option value="light">{t('themeCrispLight')}</option>
+                        <option value="glass">{t('themeIceGlass')}</option>
+                        <option value="neon">{t('themeLaserNeon')}</option>
                       </select>
                     </div>
 
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-2">3. Width Resolution</span>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-2">{t('widgetWidthResolution')}</span>
                       <input 
                         type="text" 
                         value={widgetWidth}
@@ -2162,7 +2231,7 @@ export default function App() {
                   </div>
 
                   <div className="bg-zinc-950/40 p-4 rounded-xl border border-zinc-850/60 space-y-3">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-1">4. Feature Flags</span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block mb-1">{t('widgetFeatureFlags')}</span>
                     <div className="grid grid-cols-2 gap-2.5">
                       <label className="flex items-center space-x-2 text-xs text-zinc-300 cursor-pointer">
                         <input
@@ -2172,7 +2241,7 @@ export default function App() {
                           className="rounded border-zinc-800 bg-zinc-900 accent-indigo-500 w-3.5 h-3.5"
                           style={{ accentColor: activeThemeColor }}
                         />
-                        <span>Enable Autoplay</span>
+                        <span>{t('widgetEnableAutoplay')}</span>
                       </label>
 
                       <label className="flex items-center space-x-2 text-xs text-zinc-300 cursor-pointer">
@@ -2183,7 +2252,7 @@ export default function App() {
                           className="rounded border-zinc-800 bg-zinc-900 accent-indigo-500 w-3.5 h-3.5"
                           style={{ accentColor: activeThemeColor }}
                         />
-                        <span>Show Audio Waveform</span>
+                        <span>{t('widgetShowWaveform')}</span>
                       </label>
 
                       <label className="flex items-center space-x-2 text-xs text-zinc-300 cursor-pointer">
@@ -2194,7 +2263,7 @@ export default function App() {
                           className="rounded border-zinc-800 bg-zinc-900 accent-indigo-500 w-3.5 h-3.5"
                           style={{ accentColor: activeThemeColor }}
                         />
-                        <span>Show Album Art</span>
+                        <span>{t('widgetShowCover')}</span>
                       </label>
                     </div>
                   </div>
@@ -2204,12 +2273,12 @@ export default function App() {
                 {/* Live Preview and Code output Column (6 cols) */}
                 <div className="lg:col-span-6 flex flex-col space-y-4">
                   {/* Title Preview */}
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block px-1">Live Widget Preview</span>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold block px-1">{t('widgetLivePreview')}</span>
                   
                   {/* Generated Iframe element inside preview box */}
                   <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-850/70 flex items-center justify-center min-h-[220px]">
                     <iframe
-                      src={`${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}`}
+                      src={`${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&lang=${lang}`}
                       className="rounded-xl overflow-hidden border border-zinc-800 shadow-2xl transition-all duration-300"
                       style={{
                         width: widgetWidth,
@@ -2222,35 +2291,35 @@ export default function App() {
                   {/* Generated Embed Code Output */}
                   <div className="bg-zinc-950 rounded-xl p-4 border border-zinc-850/80">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">Generated Iframe Code</span>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">{t('widgetGeneratedCode')}</span>
                       <button
                         onClick={() => {
-                          const code = `<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`;
+                          const code = `<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&lang=${lang}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`;
                           navigator.clipboard.writeText(code);
-                          showToast(lang === 'th' ? 'คัดลอกโค้ดฝังวิดเจ็ตสำเร็จ!' : 'Widget embed code copied!', 'success');
+                          showToast(t('widgetCopySuccess'), 'success');
                         }}
                         className="text-[10px] font-bold font-mono bg-zinc-800 hover:bg-zinc-700 hover:text-white text-zinc-300 px-2.5 py-1 rounded border border-zinc-750 flex items-center space-x-1 cursor-pointer transition"
                       >
                         <Copy className="w-3 h-3" />
-                        <span>Copy Code</span>
+                        <span>{t('widgetCopyBtn')}</span>
                       </button>
                     </div>
                     
                     <textarea
                       readOnly
-                      value={`<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`}
+                      value={`<iframe src="${window.location.origin}${window.location.pathname}?embed=true&station=${widgetStation}&theme=${widgetTheme}&autoplay=${widgetAutoplay}&volume=${widgetVolume}&waveform=${widgetShowWaveform}&cover=${widgetShowCover}&lang=${lang}" width="${widgetWidth}" height="${widgetHeight}" frameborder="0" allow="autoplay"></iframe>`}
                       className="w-full bg-zinc-900/50 p-3 rounded-lg border border-zinc-850 font-mono text-[10px] text-zinc-300 h-24 focus:outline-none select-all"
                     />
                   </div>
 
                   {/* Usage Manual Guide */}
                   <div className="bg-zinc-950/20 p-4 rounded-xl border border-zinc-900">
-                    <span className="text-[11px] font-mono uppercase text-zinc-400 font-bold block mb-1">คู่มือการใช้งาน (Widget Usage Instructions)</span>
+                    <span className="text-[11px] font-mono uppercase text-zinc-400 font-bold block mb-1">{t('widgetUsageTitle')}</span>
                     <ul className="text-[11px] text-zinc-500 list-disc list-inside space-y-1 leading-relaxed">
-                      <li>Copy the generated iframe code snippet.</li>
-                      <li>Paste it into any HTML web page or block builder (WordPress, Wix, custom site).</li>
-                      <li>Adjust width or height attributes to fit your host design grid.</li>
-                      <li>Secure stream connections require SSL/HTTPS enabled on your page.</li>
+                      <li>{t('widgetUsage1')}</li>
+                      <li>{t('widgetUsage2')}</li>
+                      <li>{t('widgetUsage3')}</li>
+                      <li>{t('widgetUsage4')}</li>
                     </ul>
                   </div>
 
@@ -2376,7 +2445,7 @@ export default function App() {
               {/* Languages switcher */}
               <div className="mt-4 pt-4 border-t border-zinc-800">
                 <span className="text-[10px] font-mono uppercase text-zinc-500 block mb-2 font-bold">
-                  Language / ภาษา
+                  {t('languageHeader')}
                 </span>
                 <div className="grid grid-cols-2 gap-1.5">
                   {LANGUAGES.map((l) => (
@@ -2405,7 +2474,7 @@ export default function App() {
       {/* ========================================================= */}
       {/* STICKY BOTTOM PLAYER CONTROLLER BAR */}
       {/* ========================================================= */}
-      <footer id="bottom-sticky-player" className="fixed bottom-0 left-0 right-0 h-24 bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-850/60 px-4 md:px-6 flex items-center justify-between z-40 shadow-2xl">
+      <footer id="bottom-sticky-player" className="fixed bottom-0 left-0 lg:left-80 right-0 h-24 bg-zinc-900/90 backdrop-blur-xl border-t border-zinc-850/60 px-4 md:px-6 flex items-center justify-between z-40 shadow-2xl">
         
         {/* Left Side: Selected Station Info and track metadata */}
         <div className="flex items-center space-x-3.5 w-1/3 min-w-0">
@@ -2518,6 +2587,122 @@ export default function App() {
         ))}
       </div>
 
+      {/* ========================================================= */}
+      {/* STATION INFO SPECIFICATIONS MODAL */}
+      {/* ========================================================= */}
+      {isInfoModalOpen && (
+        <div id="station-info-modal" className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            
+            {/* Modal Header */}
+            <div className="p-5 border-b border-zinc-850 flex items-center justify-between bg-zinc-950/40">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-600/10 flex items-center justify-center text-indigo-400 flex-shrink-0" style={{ color: activeThemeColor, backgroundColor: activeThemeColor + '10' }}>
+                  <Radio className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-zinc-100">{t('aboutStation')}</h3>
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">{currentStation.name}</p>
+                </div>
+              </div>
+              
+              <button 
+                id="close-station-info-modal"
+                onClick={() => setIsInfoModalOpen(false)}
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto space-y-5 scrollbar-thin">
+              {isLoadingStationInfo ? (
+                <div className="flex items-center justify-center py-12 space-x-2">
+                  <RefreshCw className="w-5 h-5 animate-spin text-indigo-400" style={{ color: activeThemeColor }} />
+                  <span className="text-sm text-zinc-400">{t('loading')}</span>
+                </div>
+              ) : stationInfo ? (
+                <div className="space-y-5">
+                  {/* Station Description */}
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">
+                      คำอธิบายสถานี (Description)
+                    </span>
+                    <p className="text-xs text-zinc-300 leading-relaxed bg-zinc-950/50 p-4 rounded-xl border border-zinc-850">
+                      {stationInfo.description || 'ไม่มีข้อมูลอธิบายสถานีในขณะนี้ (No description available for this station)'}
+                    </p>
+                  </div>
+
+                  {/* Metadata Grid */}
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">
+                      ข้อมูลจำเพาะระบบ (System Specifications)
+                    </span>
+                    <div className="grid grid-cols-3 gap-2.5">
+                      <div className="bg-zinc-950/30 p-3 rounded-xl border border-zinc-850/40 text-center">
+                        <span className="text-[8px] font-mono uppercase tracking-widest text-zinc-500 font-bold block">Frontend Stream</span>
+                        <span className="text-xs font-bold text-zinc-200 mt-1 block capitalize">{stationInfo.frontend || 'Icecast'}</span>
+                      </div>
+                      <div className="bg-zinc-950/30 p-3 rounded-xl border border-zinc-850/40 text-center">
+                        <span className="text-[8px] font-mono uppercase tracking-widest text-zinc-500 font-bold block">Backend AutoDJ</span>
+                        <span className="text-xs font-bold text-zinc-200 mt-1 block capitalize">{stationInfo.backend || 'Liquidsoap'}</span>
+                      </div>
+                      <div className="bg-zinc-950/30 p-3 rounded-xl border border-zinc-850/40 text-center">
+                        <span className="text-[8px] font-mono uppercase tracking-widest text-zinc-500 font-bold block">Timezone / เวลา</span>
+                        <span className="text-xs font-bold text-zinc-200 mt-1 block truncate" title={stationInfo.timezone}>{stationInfo.timezone || 'UTC'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stream Mounts & Streams list */}
+                  {stationInfo.mounts && stationInfo.mounts.length > 0 && (
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">
+                        จุดเชื่อมต่อสัญญาณเสียง (Audio Mountpoints)
+                      </span>
+                      <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
+                        {stationInfo.mounts.map((mount: any) => (
+                          <div key={mount.id} className="flex items-center justify-between p-3 rounded-xl bg-zinc-950/30 border border-zinc-850/40 text-xs">
+                            <span className="font-mono text-zinc-300 font-bold truncate pr-2">{mount.name}</span>
+                            <div className="flex items-center space-x-2.5 flex-shrink-0 font-mono text-[10px]">
+                              <span className="bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded font-bold uppercase">{mount.format}</span>
+                              <span className="text-indigo-400 font-bold" style={{ color: activeThemeColor }}>{mount.bitrate} kbps</span>
+                              {mount.listeners && (
+                                <span className="text-emerald-400 font-bold">● {mount.listeners.current}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              ) : (
+                <div className="bg-zinc-950/40 p-5 rounded-xl border border-zinc-850 text-center">
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    เชื่อมต่อกับข้อมูลจำเพาะของสถานีหลักเรียบร้อย สตรีมเสียงผ่านเซิร์ฟเวอร์สำรองมาตรฐาน TMN Audio Direct เข้ารหัสแบบสเตอริโอความละเอียดสูง
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-zinc-850 bg-zinc-950/20 flex justify-end">
+              <button
+                id="close-station-info-modal-footer"
+                onClick={() => setIsInfoModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold transition cursor-pointer"
+              >
+                {lang === 'th' ? 'ปิดหน้านี้' : 'Close'}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
@@ -2534,13 +2719,18 @@ function EmbedPlayer() {
   const initialVolume = parseFloat(urlParams.get('volume') || '0.8');
   const showWaveform = urlParams.get('waveform') !== 'false';
   const showCover = urlParams.get('cover') !== 'false';
+  const lang = urlParams.get('lang') || 'th';
+
+  const getEmbedT = (key: string, defaultVal: string) => {
+    return TRANSLATIONS[lang]?.[key] || TRANSLATIONS['th']?.[key] || defaultVal;
+  };
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(initialVolume);
   const [isMuted, setIsMuted] = useState(false);
   const [metadata, setMetadata] = useState({
-    title: 'Loading...',
-    artist: 'TryMeNow Radio',
+    title: getEmbedT('loading', 'Loading...'),
+    artist: getEmbedT('defaultArtist', 'TryMeNow Radio'),
     art: 'https://radio.sotyai.com/static/img/logo.png',
     listeners: 0
   });
@@ -2554,7 +2744,7 @@ function EmbedPlayer() {
 
   const fetchEmbedMetadata = async () => {
     try {
-      const res = await fetch(`https://radio.sotyai.com/api/nowplaying/${stationId}`, {
+      const res = await fetch(`/api/nowplaying/${stationId}`, {
         headers: { 'Accept': 'application/json' }
       });
       if (res.ok) {
@@ -2676,7 +2866,7 @@ function EmbedPlayer() {
           <div className="flex items-center space-x-1.5">
             <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: isPlaying ? '#10b981' : '#71717a' }} />
             <span className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase font-bold">
-              {isPlaying ? 'ON AIR' : 'PAUSED'}
+              {isPlaying ? getEmbedT('onAirBadge', 'ON AIR') : getEmbedT('stopListening', 'PAUSED')}
             </span>
           </div>
           <p className="text-sm font-bold truncate pr-2" style={{ color: theme === 'light' ? '#18181b' : '#f4f4f5' }}>
@@ -2713,7 +2903,7 @@ function EmbedPlayer() {
           style={{ backgroundColor: accentColor }}
         >
           {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-          <span>{isPlaying ? 'PAUSE' : 'LISTEN'}</span>
+          <span>{isPlaying ? getEmbedT('stopListening', 'PAUSE').toUpperCase() : getEmbedT('listenRadio', 'LISTEN').toUpperCase()}</span>
         </button>
 
         {/* Volume controller */}
@@ -2738,16 +2928,4 @@ function EmbedPlayer() {
       </div>
     </div>
   );
-}
-
-// ล่างสุดของไฟล์ App.tsx 
-if (typeof window !== 'undefined') {
-  // 🌟 เปลี่ยนมาใช้การ import แบบ dynamic inline ตรงนี้เลย เพื่อป้องกันการตีกันกับด้านบน
-  import('react-dom/client').then(({ createRoot }) => {
-    createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    );
-  });
 }
