@@ -82,6 +82,55 @@ const STATIONS: Station[] = [
   }
 ];
 
+const renderFlag = (code: string) => {
+  switch (code) {
+    case 'th':
+      return (
+        <svg viewBox="0 0 18 12" className="w-5 h-3.5 rounded-sm shadow-sm flex-shrink-0 border border-zinc-800/40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="18" height="12" fill="#F42A41"/>
+          <rect y="2" width="18" height="8" fill="#FFF"/>
+          <rect y="4" width="18" height="4" fill="#00247D"/>
+        </svg>
+      );
+    case 'en':
+      return (
+        <svg viewBox="0 0 18 12" className="w-5 h-3.5 rounded-sm shadow-sm flex-shrink-0 border border-zinc-800/40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="18" height="12" fill="#FFF"/>
+          <path d="M0 1h18M0 3h18M0 5h18M0 7h18M0 9h18M0 11h18" stroke="#B22234" strokeWidth="1"/>
+          <rect width="8" height="7" fill="#3C3B6E"/>
+          <circle cx="2" cy="2" r="0.4" fill="#FFF" />
+          <circle cx="4" cy="2" r="0.4" fill="#FFF" />
+          <circle cx="6" cy="2" r="0.4" fill="#FFF" />
+          <circle cx="3" cy="3.5" r="0.4" fill="#FFF" />
+          <circle cx="5" cy="3.5" r="0.4" fill="#FFF" />
+          <circle cx="2" cy="5" r="0.4" fill="#FFF" />
+          <circle cx="4" cy="5" r="0.4" fill="#FFF" />
+          <circle cx="6" cy="5" r="0.4" fill="#FFF" />
+        </svg>
+      );
+    case 'zh':
+      return (
+        <svg viewBox="0 0 18 12" className="w-5 h-3.5 rounded-sm shadow-sm flex-shrink-0 border border-zinc-800/40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="18" height="12" fill="#DE2910"/>
+          <polygon points="3,3.5 3.3,4.4 4.2,4.4 3.5,5.0 3.8,5.9 3,5.3 2.2,5.9 2.5,5.0 1.8,4.4 2.7,4.4" fill="#FFDE00"/>
+          <circle cx="5.5" cy="1.8" r="0.4" fill="#FFDE00" />
+          <circle cx="6.5" cy="3" r="0.4" fill="#FFDE00" />
+          <circle cx="6.5" cy="4.5" r="0.4" fill="#FFDE00" />
+          <circle cx="5.5" cy="5.7" r="0.4" fill="#FFDE00" />
+        </svg>
+      );
+    case 'vi':
+      return (
+        <svg viewBox="0 0 18 12" className="w-5 h-3.5 rounded-sm shadow-sm flex-shrink-0 border border-zinc-800/40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="18" height="12" fill="#DA251D"/>
+          <polygon points="9,3.5 9.4,4.8 10.7,4.8 9.6,5.6 10,6.9 9,6.1 8,6.9 8.4,5.6 7.3,4.8 8.6,4.8" fill="#FFFF00"/>
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 const LANGUAGES = [
   { code: 'th', name: 'ไทย', flag: '🇹🇭' },
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -134,7 +183,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     duration: "ความยาว",
     searchBoxLabel: "พิมพ์เพื่อกรองตามชื่อเพลงหรือนักร้อง",
     listenRadio: "ฟังวิทยุ",
-    reloadRadio: "รีโหลดวิทยุ",
+    reloadRadio: "รีโหลด",
+    changeStation: "เปลี่ยนสถานี",
     widgetTitle: "เครื่องมือสร้างวิดเจ็ต (Embed Widget Builder)",
     widgetDesc: "ปรับแต่งและสร้างโค้ด Embed Widget เพื่อนำเครื่องเล่นวิทยุนี้ไปแปะในเว็บไซต์หรือบล็อกของคุณได้อย่างง่ายดาย",
     widgetTheme: "ธีมเครื่องเล่น",
@@ -226,7 +276,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     duration: "Duration",
     searchBoxLabel: "Type to filter by song title or artist",
     listenRadio: "Listen Radio",
-    reloadRadio: "Reload Radio",
+    reloadRadio: "Reload",
+    changeStation: "Change Station",
     widgetTitle: "Player Embed Widget Builder",
     widgetDesc: "Customize and generate an embeddable radio player widget to place on your website or blog easily.",
     widgetTheme: "Player Theme",
@@ -319,6 +370,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     searchBoxLabel: "输入以过滤歌曲名称或歌手",
     listenRadio: "收听广播",
     reloadRadio: "重新加载",
+    changeStation: "切换电台",
     widgetTitle: "播放器嵌入小组件生成器",
     widgetDesc: "自定义并生成可嵌入的电台播放器，以便轻松放置在您的网站或博客中。",
     widgetTheme: "播放器主题",
@@ -346,13 +398,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetColorTheme: "2. 颜色预设主题",
     themeCosmicDark: "深空黑 (Cosmic Dark)",
     themeCrispLight: "极简白 (Crisp Light)",
-    themeIceGlass: "冰川玻 (Ice Glass)",
-    themeLaserNeon: "激光霓 (Laser Neon)",
+    themeIceGlass: "冰川玻璃 (Ice Glass)",
+    themeLaserNeon: "激光霓虹 (Laser Neon)",
     widgetWidthResolution: "3. 宽度分辨率",
     widgetFeatureFlags: "4. 特性选项",
     widgetEnableAutoplay: "启用自动播放",
     widgetShowWaveform: "显示波形动画",
     widgetShowCover: "显示歌曲封面",
+    widgetAddRequestBtn: "添加点歌按钮 (Song Request Button)",
+    widgetShowSchedule: "显示节目表 (Show Broadcast Schedule)",
+    widgetShowQueue: "显示即将播放队列 (Show Upcoming Queue)",
     widgetLivePreview: "实时预览 (Live Preview)",
     widgetGeneratedCode: "生成的 HTML Iframe 代码",
     widgetUsageTitle: "嵌入小组件使用说明",
@@ -407,7 +462,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     duration: "Thời lượng",
     searchBoxLabel: "Nhập để lọc theo tên bài hát hoặc ca sĩ",
     listenRadio: "Nghe đài",
-    reloadRadio: "Tải lại đài",
+    reloadRadio: "Tải lại",
+    changeStation: "Đổi kênh",
     widgetTitle: "Công cụ tạo Widget Embed trình phát",
     widgetDesc: "Tùy chỉnh và tạo mã widget trình phát radio nhúng để dễ dàng đưa lên trang web hoặc blog của bạn.",
     widgetTheme: "Giao diện trình phát",
@@ -417,7 +473,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetHeight: "Chiều cao",
     widgetPreview: "Xem trước trực tiếp",
     widgetCode: "Mã HTML nhúng (Sao chép để sử dụng)",
-    widgetCopyBtn: "Sao chép mã nhúng",
+    widgetCopyBtn: "Mã nhúng sao chép",
     widgetUsageGuide: "Hướng dẫn sử dụng & Quy định",
     widgetWaveform: "Hiển thị sóng âm động",
     widgetCover: "Hiển thị ảnh bìa bài hát",
@@ -442,6 +498,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     widgetEnableAutoplay: "Bật tự động phát",
     widgetShowWaveform: "Hiển thị sóng âm động",
     widgetShowCover: "Hiển thị ảnh bìa bài hát",
+    widgetAddRequestBtn: "Thêm nút yêu cầu bài hát (Song Request Button)",
+    widgetShowSchedule: "Hiển thị lịch phát sóng (Show Broadcast Schedule)",
+    widgetShowQueue: "Hiển thị hàng đợi tiếp theo (Show Upcoming Queue)",
     widgetLivePreview: "Xem trước trực tiếp",
     widgetGeneratedCode: "Mã HTML nhúng được tạo",
     widgetUsageTitle: "Hướng dẫn sử dụng Widget",
@@ -519,11 +578,15 @@ interface QueueItem {
 
 interface ScheduleItem {
   id: number;
+  type?: string;
   name: string;
-  start_time: string;
-  end_time: string;
-  days: number[];
-  is_active: boolean;
+  title?: string;
+  description?: string;
+  start_timestamp: number;
+  start: string;
+  end_timestamp: number;
+  end: string;
+  is_now: boolean;
 }
 
 interface Toast {
@@ -713,6 +776,8 @@ function MainRadioApp() {
   const [volume, setVolume] = useState<number>(0.8);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [streamStatus, setStreamStatus] = useState<'connected' | 'connecting' | 'stalled'>('connected');
+  const [isStationModalOpen, setIsStationModalOpen] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // API Data States
   const [nowPlaying, setNowPlaying] = useState<NowPlaying>({
@@ -837,13 +902,18 @@ function MainRadioApp() {
       const res = await fetchWithAuth(`/api/station/${currentStation.id}/schedule`);
       if (res.ok) {
         const data = await res.json();
-        setSchedule(data.map((item: any) => ({
+        const list = Array.isArray(data) ? data : (data?.schedule || []);
+        setSchedule(list.map((item: any) => ({
           id: item.id,
-          name: item.name || 'Special Broadcast Playlist',
-          start_time: item.start_time || '00:00',
-          end_time: item.end_time || '23:59',
-          days: item.days || [0,1,2,3,4,5,6],
-          is_active: !!item.is_active
+          type: item.type || 'playlist',
+          name: item.name || item.title || 'TryMeNow',
+          title: item.title || item.name || 'TryMeNow',
+          description: item.description || '',
+          start_timestamp: Number(item.start_timestamp || 0),
+          start: item.start || '',
+          end_timestamp: Number(item.end_timestamp || 0),
+          end: item.end || '',
+          is_now: !!item.is_now
         })));
       } else {
         setSchedule([]);
@@ -936,6 +1006,16 @@ function MainRadioApp() {
   useEffect(() => {
     safeSetLocalStorage('tmn_selected_lang', lang);
   }, [lang]);
+
+  // Handle mobile check for modal vs full screen layouts (768px is the 'md' breakpoint)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Synchronized clock tick in seconds for upcoming queue countdowns
   useEffect(() => {
@@ -1200,6 +1280,26 @@ function MainRadioApp() {
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   };
 
+  const formatScheduleTime = (isoString: string) => {
+    try {
+      if (!isoString) return '--:--';
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch (e) {
+      return '--:--';
+    }
+  };
+
+  const formatScheduleDay = (isoString: string) => {
+    try {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      return d.toLocaleDateString(lang === 'th' ? 'th-TH' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+    } catch (e) {
+      return '';
+    }
+  };
+
   // Progress Bar Percentage
   const progressPercent = useMemo(() => {
     if (!trackDuration) return 0;
@@ -1391,7 +1491,7 @@ function MainRadioApp() {
                       : 'bg-zinc-900/40 border-zinc-900 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
                   }`}
                 >
-                  <span>{l.flag}</span>
+                  {renderFlag(l.code)}
                   <span className="truncate">{l.name}</span>
                 </button>
               ))}
@@ -1482,7 +1582,7 @@ function MainRadioApp() {
         {/* ------------------------------------------------------------- */}
         {/* VIEW 1: PLAYER & HISTORY & UPCOMING QUEUE */}
         {/* ------------------------------------------------------------- */}
-        {currentTab === 'player' && (
+        {(currentTab === 'player' || (!isMobile && (currentTab === 'request' || currentTab === 'schedule'))) && (
           <div id="player-tab-content" className="p-4 md:p-8 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
             
             {/* Now Playing Widget Column (7 cols) */}
@@ -1495,7 +1595,7 @@ function MainRadioApp() {
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
                 
                 {/* Album Cover wrapper */}
-                <div className="relative flex-shrink-0">
+                <div className="relative flex-shrink-0 flex flex-col items-center gap-3 w-full md:w-auto">
                   <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-xl border border-zinc-800 group-hover:scale-102 transition duration-500 bg-zinc-950 flex items-center justify-center">
                     {nowPlaying.art ? (
                       <img 
@@ -1519,6 +1619,41 @@ function MainRadioApp() {
                         <span className="text-[8px] font-bold font-mono uppercase tracking-wider text-emerald-400">Stream Live</span>
                       </div>
                     )}
+                  </div>
+
+                  {/* Moved buttons from Shortcut Menu */}
+                  <div className="grid grid-cols-2 gap-2 w-full max-w-[192px] md:max-w-[224px]">
+                    <button
+                      onClick={() => setCurrentTab('request')}
+                      className={`p-2.5 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 gap-1 cursor-pointer text-center ${
+                        (currentTab as string) === 'request'
+                          ? 'bg-indigo-950/40 text-white font-bold'
+                          : 'bg-zinc-950/40 border-zinc-850 text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200'
+                      }`}
+                      style={{
+                        borderColor: (currentTab as string) === 'request' ? activeThemeColor : undefined,
+                        color: (currentTab as string) === 'request' ? activeThemeColor : undefined,
+                      }}
+                    >
+                      <Search className="w-4 h-4" />
+                      <span className="text-[11px] font-bold">{t('tabRequest')}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setCurrentTab('schedule')}
+                      className={`p-2.5 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 gap-1 cursor-pointer text-center ${
+                        (currentTab as string) === 'schedule'
+                          ? 'bg-indigo-950/40 text-white font-bold'
+                          : 'bg-zinc-950/40 border-zinc-850 text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200'
+                      }`}
+                      style={{
+                        borderColor: (currentTab as string) === 'schedule' ? activeThemeColor : undefined,
+                        color: (currentTab as string) === 'schedule' ? activeThemeColor : undefined,
+                      }}
+                    >
+                      <Calendar className="w-4 h-4" />
+                      <span className="text-[11px] font-bold">{t('tabSchedule')}</span>
+                    </button>
                   </div>
                 </div>
 
@@ -1567,6 +1702,15 @@ function MainRadioApp() {
                       <Share2 className="w-3.5 h-3.5 mr-1.5" />
                       <span>{t('shareBtn')}</span>
                     </button>
+                  </div>
+
+                  {/* Real-time Audio Matrix Visualizer */}
+                  <div className="mt-4">
+                    <AudioWaveVisualizer 
+                      isPlaying={isPlaying} 
+                      volume={volume} 
+                      themeColor={activeThemeColor} 
+                    />
                   </div>
 
                   {/* Listen and Reload Quick Controls */}
@@ -1625,106 +1769,26 @@ function MainRadioApp() {
                       <RefreshCw className={`w-3.5 h-3.5 ${streamStatus === 'connecting' ? 'animate-spin' : ''}`} />
                       <span>{t('reloadRadio')}</span>
                     </button>
+
+                    <button 
+                      id="btn-change-station"
+                      onClick={() => setIsStationModalOpen(true)}
+                      className="text-xs font-bold px-3.5 py-2 rounded-xl transition-all duration-300 flex items-center space-x-1.5 cursor-pointer bg-zinc-800/40 hover:bg-zinc-700/60 text-zinc-200 border border-zinc-700/55 hover:scale-102 shadow-md"
+                      style={{ 
+                        color: activeThemeColor, 
+                        borderColor: activeThemeColor + '40', 
+                        backgroundColor: activeThemeColor + '10' 
+                      }}
+                    >
+                      <Radio className="w-3.5 h-3.5" />
+                      <span>{t('changeStation')}</span>
+                    </button>
                   </div>
 
                 </div>
 
               </div>
 
-              {/* Glowing Waves Canvas Container */}
-              <AudioWaveVisualizer 
-                isPlaying={isPlaying} 
-                volume={volume} 
-                themeColor={activeThemeColor} 
-              />
-
-              {/* รายการสถานีทั้งหมด (All Stations Selector) */}
-              <div className="bg-zinc-900/60 p-6 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-600/10 flex items-center justify-center text-indigo-400 flex-shrink-0" style={{ color: activeThemeColor, backgroundColor: activeThemeColor + '10' }}>
-                      <Radio className="w-5 h-5 animate-pulse" />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold text-zinc-100">{t('allStationsTitle')}</h4>
-                      <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">{t('allStationsDesc')}</p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] bg-zinc-800 text-zinc-300 px-2.5 py-1 rounded-full font-mono font-bold">
-                    {STATIONS.length} LIVE CHANNELS
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                  {STATIONS.map((st) => {
-                    const isActive = currentStation.id === st.id;
-                    return (
-                      <button
-                        key={st.id}
-                        id={`player-station-select-${st.id}`}
-                        onClick={() => selectStation(st)}
-                        className={`text-left p-4 rounded-xl transition-all duration-300 flex items-center justify-between group relative cursor-pointer overflow-hidden border ${
-                          isActive 
-                            ? 'bg-zinc-800/80 border-indigo-500/80 shadow-lg shadow-indigo-950/20' 
-                            : 'bg-zinc-950/40 border-zinc-850 hover:bg-zinc-900 hover:border-zinc-800'
-                        }`}
-                        style={{ 
-                          borderColor: isActive ? activeThemeColor : undefined,
-                        } as any}
-                      >
-                        <div className="flex items-center space-x-3.5 min-w-0 z-10">
-                          <div className={`w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3 ${
-                            isActive ? 'text-white' : 'text-zinc-400'
-                          }`}
-                          style={{ 
-                            color: isActive ? activeThemeColor : undefined,
-                            borderColor: isActive ? activeThemeColor + '40' : undefined
-                          }}
-                          >
-                            <Radio className="w-5 h-5" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className={`text-sm font-bold truncate transition-colors duration-300 ${
-                              isActive ? 'text-zinc-100' : 'text-zinc-300 group-hover:text-white'
-                            }`}>
-                              {st.name}
-                            </p>
-                            <p className="text-[10px] text-zinc-500 font-mono tracking-wider truncate mt-0.5">
-                              {st.id.toUpperCase().replace('_', ' ')}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Active Indicator & Visualizer */}
-                        <div className="flex items-center space-x-2 z-10 flex-shrink-0">
-                          {isActive && isPlaying ? (
-                            <div className="flex items-end space-x-0.75 h-4 pr-1">
-                              <span className="w-0.75 h-3 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.1s', backgroundColor: activeThemeColor }} />
-                              <span className="w-0.75 h-4 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.3s', backgroundColor: activeThemeColor }} />
-                              <span className="w-0.75 h-2 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.5s', backgroundColor: activeThemeColor }} />
-                            </div>
-                          ) : isActive ? (
-                            <span className="text-[9px] bg-indigo-950 text-indigo-400 font-mono font-bold px-2 py-0.5 rounded-md border border-indigo-900/50" style={{ color: activeThemeColor, borderColor: activeThemeColor + '30', backgroundColor: activeThemeColor + '10' }}>
-                              ACTIVE
-                            </span>
-                          ) : null}
-                        </div>
-                        
-                        {/* Interactive glow effect */}
-                        {isActive && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-indigo-500/5 pointer-events-none opacity-50" style={{ backgroundImage: `linear-gradient(to right, transparent, ${activeThemeColor}05)` }} />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-
-            {/* Sidebar Column: Queue & Playback History (5 cols) */}
-            <div className="lg:col-span-5 flex flex-col space-y-6">
-              
               {/* Quick Menu */}
               <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl space-y-4">
                 <div className="flex items-center space-x-2 border-b border-zinc-850/60 pb-3">
@@ -1732,41 +1796,6 @@ function MainRadioApp() {
                   <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-300">
                     {t('quickMenu')}
                   </h3>
-                </div>
-
-                {/* Request and Schedule Quick Nav Buttons */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  <button
-                    onClick={() => setCurrentTab('request')}
-                    className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 gap-1.5 cursor-pointer ${
-                      (currentTab as string) === 'request'
-                        ? 'bg-indigo-950/40 text-white font-bold'
-                        : 'bg-zinc-950/40 border-zinc-850 text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200'
-                    }`}
-                    style={{
-                      borderColor: (currentTab as string) === 'request' ? activeThemeColor : undefined,
-                      color: (currentTab as string) === 'request' ? activeThemeColor : undefined,
-                    }}
-                  >
-                    <Search className="w-4 h-4" />
-                    <span className="text-[11px] font-bold">{t('tabRequest')}</span>
-                  </button>
-
-                  <button
-                    onClick={() => setCurrentTab('schedule')}
-                    className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 gap-1.5 cursor-pointer ${
-                      (currentTab as string) === 'schedule'
-                        ? 'bg-indigo-950/40 text-white font-bold'
-                        : 'bg-zinc-950/40 border-zinc-850 text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-200'
-                    }`}
-                    style={{
-                      borderColor: (currentTab as string) === 'schedule' ? activeThemeColor : undefined,
-                      color: (currentTab as string) === 'schedule' ? activeThemeColor : undefined,
-                    }}
-                  >
-                    <Calendar className="w-4 h-4" />
-                    <span className="text-[11px] font-bold">{t('tabSchedule')}</span>
-                  </button>
                 </div>
 
                 {/* Downloads & External Links */}
@@ -1818,6 +1847,11 @@ function MainRadioApp() {
                   ) : null}
                 </div>
               </div>
+
+            </div>
+
+            {/* Sidebar Column: Queue & Playback History (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col space-y-6">
 
               {/* Song Queue Segment */}
               <div className="bg-zinc-900 p-5 rounded-2xl border border-zinc-850 flex flex-col shadow-xl">
@@ -1964,17 +1998,42 @@ function MainRadioApp() {
         {/* VIEW 2: SONG REQUEST PANEL */}
         {/* ------------------------------------------------------------- */}
         {currentTab === 'request' && (
-          <div id="request-tab-content" className="p-4 md:p-8 max-w-4xl mx-auto w-full animate-fade-in">
-            <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-850 shadow-xl space-y-6">
-              
-              {/* Back to player button */}
-              <button
+          <div className={!isMobile ? "fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in" : ""}>
+            {!isMobile && (
+              <div 
+                className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm transition-opacity"
                 onClick={() => setCurrentTab('player')}
-                className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-950/60 hover:bg-zinc-800 border border-zinc-850/80 px-3 py-1.5 rounded-lg transition-all w-fit cursor-pointer"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span className="font-bold">{t('backBtn')}</span>
-              </button>
+              />
+            )}
+            
+            <div 
+              id="request-tab-content" 
+              className={`w-full mx-auto relative z-10 transition-all duration-300 ${
+                !isMobile 
+                  ? "bg-zinc-900 p-6 md:p-8 rounded-2xl border border-zinc-850 shadow-2xl max-w-4xl max-h-[85vh] overflow-y-auto space-y-6" 
+                  : "p-4 md:p-8 max-w-4xl bg-zinc-900 rounded-2xl border border-zinc-850 shadow-xl space-y-6 animate-fade-in"
+              }`}
+            >
+              {/* Back to player button */}
+              {isMobile && (
+                <button
+                  onClick={() => setCurrentTab('player')}
+                  className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-950/60 hover:bg-zinc-800 border border-zinc-850/80 px-3 py-1.5 rounded-lg transition-all w-fit cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span className="font-bold">{t('backBtn')}</span>
+                </button>
+              )}
+
+              {/* Close Button */}
+              {!isMobile && (
+                <button
+                  onClick={() => setCurrentTab('player')}
+                  className="absolute top-5 right-5 p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
 
               {/* Search Heading & Stats */}
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-zinc-850 pb-5">
@@ -2185,17 +2244,42 @@ function MainRadioApp() {
         {/* VIEW 3: SCHEDULE TIMETABLE */}
         {/* ------------------------------------------------------------- */}
         {currentTab === 'schedule' && (
-          <div id="schedule-tab-content" className="p-4 md:p-8 max-w-4xl mx-auto w-full">
-            <div className="bg-zinc-900 p-6 rounded-2xl border border-zinc-850 shadow-xl space-y-6">
-              
-              {/* Back to player button */}
-              <button
+          <div className={!isMobile ? "fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in" : ""}>
+            {!isMobile && (
+              <div 
+                className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm transition-opacity"
                 onClick={() => setCurrentTab('player')}
-                className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-950/60 hover:bg-zinc-800 border border-zinc-850/80 px-3 py-1.5 rounded-lg transition-all w-fit cursor-pointer"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span className="font-bold">{t('backBtn')}</span>
-              </button>
+              />
+            )}
+            
+            <div 
+              id="schedule-tab-content" 
+              className={`w-full mx-auto relative z-10 transition-all duration-300 ${
+                !isMobile 
+                  ? "bg-zinc-900 p-6 md:p-8 rounded-2xl border border-zinc-850 shadow-2xl max-w-4xl max-h-[85vh] overflow-y-auto space-y-6" 
+                  : "p-4 md:p-8 max-w-4xl bg-zinc-900 rounded-2xl border border-zinc-850 shadow-xl space-y-6"
+              }`}
+            >
+              {/* Back to player button */}
+              {isMobile && (
+                <button
+                  onClick={() => setCurrentTab('player')}
+                  className="flex items-center space-x-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-950/60 hover:bg-zinc-800 border border-zinc-850/80 px-3 py-1.5 rounded-lg transition-all w-fit cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span className="font-bold">{t('backBtn')}</span>
+                </button>
+              )}
+
+              {/* Close Button */}
+              {!isMobile && (
+                <button
+                  onClick={() => setCurrentTab('player')}
+                  className="absolute top-5 right-5 p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
 
               {/* Timetable Header */}
               <div className="mb-6 flex items-center justify-between">
@@ -2204,66 +2288,53 @@ function MainRadioApp() {
                   <h3 className="text-lg font-bold text-zinc-100">{t('scheduleTitle')}</h3>
                 </div>
                 <span className="text-xs text-zinc-500 font-mono">
-                  Weekly Timetable
+                  Station Schedule
                 </span>
               </div>
 
               {/* Active Timetable List */}
               <div className="space-y-4">
                 {schedule.length > 0 ? (
-                  schedule.map((item) => (
+                  schedule.map((item, index) => (
                     <div 
-                      key={item.id} 
+                      key={`${item.id}-${item.start_timestamp}-${index}`} 
                       className={`p-4 rounded-xl border transition-all ${
-                        item.is_active 
+                        item.is_now 
                           ? 'bg-indigo-600/10 border-indigo-500/30 shadow-[0_0_12px_rgba(99,102,241,0.05)]' 
                           : 'bg-zinc-950/40 border-zinc-900 hover:bg-zinc-950'
                       }`}
                       style={{ 
-                        backgroundColor: item.is_active ? activeThemeColor + '10' : undefined,
-                        borderColor: item.is_active ? activeThemeColor + '30' : undefined
+                        backgroundColor: item.is_now ? activeThemeColor + '10' : undefined,
+                        borderColor: item.is_now ? activeThemeColor + '30' : undefined
                       }}
                     >
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <div className="flex items-start space-x-3.5">
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                            item.is_active ? 'bg-indigo-600 text-white' : 'bg-zinc-900 text-zinc-500'
+                            item.is_now ? 'bg-indigo-600 text-white' : 'bg-zinc-900 text-zinc-500'
                           }`}
-                          style={{ backgroundColor: item.is_active ? activeThemeColor : undefined }}
+                          style={{ backgroundColor: item.is_now ? activeThemeColor : undefined }}
                           >
                             <Clock className="w-5 h-5" />
                           </div>
                           <div>
                             <h4 className="font-bold text-sm text-zinc-100">{item.name}</h4>
-                            <div className="flex flex-wrap gap-1 mt-1.5">
-                              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, idx) => {
-                                const isIncluded = item.days.includes(idx);
-                                return (
-                                  <span 
-                                    key={day} 
-                                    className={`text-[9px] px-1.5 py-0.5 rounded font-mono ${
-                                      isIncluded 
-                                        ? 'bg-zinc-800 text-zinc-200 font-bold' 
-                                        : 'bg-zinc-950 text-zinc-600'
-                                    }`}
-                                  >
-                                    {day}
-                                  </span>
-                                );
-                              })}
-                            </div>
+                            <p className="text-xs text-zinc-400 mt-1">{item.description || 'No description'}</p>
+                            <span className="inline-block mt-2 text-[10px] bg-zinc-800 text-zinc-300 font-mono px-2 py-0.5 rounded">
+                              {formatScheduleDay(item.start)}
+                            </span>
                           </div>
                         </div>
 
                         {/* Timing and badge info */}
                         <div className="flex items-center justify-between md:justify-end gap-3 border-t border-zinc-900 md:border-0 pt-3 md:pt-0">
                           <div className="text-right">
-                            <span className="text-xs text-zinc-400 font-mono uppercase block tracking-wider">ON AIR TIME</span>
+                            <span className="text-[10px] text-zinc-500 font-mono uppercase block tracking-wider">ON AIR TIME</span>
                             <span className="text-sm font-bold text-zinc-200 font-mono mt-0.5 block">
-                              {item.start_time} - {item.end_time}
+                              {formatScheduleTime(item.start)} - {formatScheduleTime(item.end)}
                             </span>
                           </div>
-                          {item.is_active && (
+                          {item.is_now && (
                             <span className="text-[10px] bg-emerald-500 text-zinc-950 font-bold font-mono px-2.5 py-1 rounded-full uppercase tracking-wider animate-pulse">
                               {t('onAir')}
                             </span>
@@ -2677,7 +2748,7 @@ function MainRadioApp() {
                           : 'bg-zinc-900/40 border-zinc-900 text-zinc-400'
                       }`}
                     >
-                      <span>{l.flag}</span>
+                      {renderFlag(l.code)}
                       <span className="truncate">{l.name}</span>
                     </button>
                   ))}
@@ -2922,6 +2993,119 @@ function MainRadioApp() {
         </div>
       )}
 
+      {/* Station Selector Modal */}
+      {isStationModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm transition-opacity animate-fade-in"
+            onClick={() => setIsStationModalOpen(false)}
+          />
+          
+          {/* Modal Content */}
+          <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden shadow-2xl flex flex-col z-10 transition-all duration-300 transform scale-100">
+            {/* Header */}
+            <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-600/10 flex items-center justify-center text-indigo-400 flex-shrink-0" style={{ color: activeThemeColor, backgroundColor: activeThemeColor + '10' }}>
+                  <Radio className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="text-base font-bold text-zinc-100">{t('allStationsTitle')}</h4>
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-bold">{t('allStationsDesc')}</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsStationModalOpen(false)}
+                className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* List */}
+            <div className="p-5 overflow-y-auto space-y-3.5 max-h-[55vh]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {STATIONS.map((st) => {
+                  const isActive = currentStation.id === st.id;
+                  return (
+                    <button
+                      key={st.id}
+                      id={`modal-station-select-${st.id}`}
+                      onClick={() => {
+                        selectStation(st);
+                        setIsStationModalOpen(false);
+                      }}
+                      className={`text-left p-4 rounded-xl transition-all duration-300 flex items-center justify-between group relative cursor-pointer overflow-hidden border ${
+                        isActive 
+                          ? 'bg-zinc-800/80 border-indigo-500/80 shadow-lg shadow-indigo-950/20' 
+                          : 'bg-zinc-950/40 border-zinc-850 hover:bg-zinc-900 hover:border-zinc-800'
+                      }`}
+                      style={{ 
+                        borderColor: isActive ? activeThemeColor : undefined,
+                      } as any}
+                    >
+                      <div className="flex items-center space-x-3.5 min-w-0 z-10">
+                        <div className={`w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3 ${
+                          isActive ? 'text-white' : 'text-zinc-400'
+                        }`}
+                        style={{ 
+                          color: isActive ? activeThemeColor : undefined,
+                          borderColor: isActive ? activeThemeColor + '40' : undefined
+                        }}
+                        >
+                          <Radio className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className={`text-sm font-bold truncate transition-colors duration-300 ${
+                            isActive ? 'text-zinc-100' : 'text-zinc-300 group-hover:text-white'
+                          }`}>
+                            {st.name}
+                          </p>
+                          <p className="text-[10px] text-zinc-500 font-mono tracking-wider truncate mt-0.5">
+                            {st.id.toUpperCase().replace('_', ' ')}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Active Indicator & Visualizer */}
+                      <div className="flex items-center space-x-2 z-10 flex-shrink-0">
+                        {isActive && isPlaying ? (
+                          <div className="flex items-end space-x-0.75 h-4 pr-1">
+                            <span className="w-0.75 h-3 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.1s', backgroundColor: activeThemeColor }} />
+                            <span className="w-0.75 h-4 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.3s', backgroundColor: activeThemeColor }} />
+                            <span className="w-0.75 h-2 bg-indigo-400 rounded-sm animate-bounce-custom" style={{ animationDelay: '0.5s', backgroundColor: activeThemeColor }} />
+                          </div>
+                        ) : isActive ? (
+                          <span className="text-[9px] bg-indigo-950 text-indigo-400 font-mono font-bold px-2 py-0.5 rounded-md border border-indigo-900/50" style={{ color: activeThemeColor, borderColor: activeThemeColor + '30', backgroundColor: activeThemeColor + '10' }}>
+                            ACTIVE
+                          </span>
+                        ) : null}
+                      </div>
+                      
+                      {/* Interactive glow effect */}
+                      {isActive && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-indigo-500/5 pointer-events-none opacity-50" style={{ backgroundImage: `linear-gradient(to right, transparent, ${activeThemeColor}05)` }} />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 bg-zinc-950/45 border-t border-zinc-800 flex justify-end">
+              <button
+                onClick={() => setIsStationModalOpen(false)}
+                className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-xl transition cursor-pointer"
+              >
+                {lang === 'th' ? 'ปิด' : 'Close'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
@@ -2946,6 +3130,26 @@ function EmbedPlayer() {
 
   const getEmbedT = (key: string, defaultVal: string) => {
     return TRANSLATIONS[lang]?.[key] || TRANSLATIONS['th']?.[key] || defaultVal;
+  };
+
+  const formatScheduleTime = (isoString: string) => {
+    try {
+      if (!isoString) return '--:--';
+      const d = new Date(isoString);
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch (e) {
+      return '--:--';
+    }
+  };
+
+  const formatScheduleDay = (isoString: string) => {
+    try {
+      if (!isoString) return '';
+      const d = new Date(isoString);
+      return d.toLocaleDateString(lang === 'th' ? 'th-TH' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+    } catch (e) {
+      return '';
+    }
   };
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -3028,11 +3232,19 @@ function EmbedPlayer() {
       const res = await fetchWithAuth(`/api/station/${stationId}/schedule`);
       if (res.ok) {
         const data = await res.json();
-        if (data && Array.isArray(data.schedule)) {
-          setScheduleItems(data.schedule.slice(0, 5));
-        } else if (Array.isArray(data)) {
-          setScheduleItems(data.slice(0, 5));
-        }
+        const rawList = Array.isArray(data) ? data : (data?.schedule || []);
+        setScheduleItems(rawList.map((item: any) => ({
+          id: item.id,
+          type: item.type || 'playlist',
+          name: item.name || item.title || 'TryMeNow',
+          title: item.title || item.name || 'TryMeNow',
+          description: item.description || '',
+          start_timestamp: Number(item.start_timestamp || 0),
+          start: item.start || '',
+          end_timestamp: Number(item.end_timestamp || 0),
+          end: item.end || '',
+          is_now: !!item.is_now
+        })).slice(0, 5));
       }
     } catch (e) {
       console.error(e);
@@ -3476,20 +3688,27 @@ function EmbedPlayer() {
                   <p className="text-center py-6 text-[10px] text-zinc-500">{getEmbedT('noSchedule', 'No schedule available')}</p>
                 ) : (
                   <div className="space-y-1.5 pb-2">
-                    {scheduleItems.map((item) => (
+                    {scheduleItems.map((item, index) => (
                       <div 
-                        key={item.id} 
+                        key={`${item.id}-${item.start_timestamp}-${index}`} 
                         className={`p-2 rounded border flex items-center justify-between ${itemBgClass}`}
                         style={{
-                          borderColor: item.is_active ? `${accentColor}30` : undefined,
-                          backgroundColor: item.is_active ? `${accentColor}05` : undefined
+                          borderColor: item.is_now ? `${accentColor}30` : undefined,
+                          backgroundColor: item.is_now ? `${accentColor}05` : undefined
                         }}
                       >
                         <div className="min-w-0">
                           <p className={`font-bold text-[11px] truncate ${textTitleClass}`}>{item.name}</p>
-                          <p className="text-[9px] text-zinc-500">{item.start_time} - {item.end_time}</p>
+                          <p className="text-[9px] text-zinc-500">
+                            {formatScheduleTime(item.start)} - {formatScheduleTime(item.end)}
+                          </p>
+                          {item.start && (
+                            <span className="text-[8px] text-zinc-500 block mt-0.5">
+                              {formatScheduleDay(item.start)}
+                            </span>
+                          )}
                         </div>
-                        {item.is_active && (
+                        {item.is_now && (
                           <span className="text-[8px] font-bold font-mono px-1.5 py-0.5 rounded text-white animate-pulse" style={{ backgroundColor: accentColor }}>
                             {getEmbedT('onAirBadge', 'LIVE')}
                           </span>
